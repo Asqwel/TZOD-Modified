@@ -1,0 +1,317 @@
+﻿Build started 07.06.2014 1:41:01.
+     1>Project "D:\TZOD\branches\work_NC22_modified\game\tank.vcxproj" on node 4 (rebuild target(s)).
+     1>_PrepareForClean:
+         Deleting file "tmp\Debug\tank\tank.lastbuildstate".
+       InitializeBuildStatus:
+         Touching "tmp\Debug\tank\tank.unsuccessfulbuild".
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /Isrc\tank /Isrc\zlib /Isrc\lua\src /Isrc\pluto /Isrc\oggvorbis\include /I"C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include" /Zi /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D LOGFILE /D NETWORK_DEBUG /D _MBCS /GF /Gm /EHsc /RTCc /RTC1 /MTd /GS /fp:fast /Zc:wchar_t /Zc:forScope /Yc"StdAfx.h" /Fp"tmp\Debug\tank\tank.pch" /Fo"tmp\Debug\tank\\" /Fd"tmp\Debug\tank\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt src\tank\stdafx.cpp
+         stdafx.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /Isrc\tank /Isrc\zlib /Isrc\lua\src /Isrc\pluto /Isrc\oggvorbis\include /I"C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include" /Zi /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D LOGFILE /D NETWORK_DEBUG /D _MBCS /GF /Gm /EHsc /RTCc /RTC1 /MTd /GS /fp:fast /Zc:wchar_t /Zc:forScope /Yu"StdAfx.h" /Fp"tmp\Debug\tank\tank.pch" /Fo"tmp\Debug\tank\\" /Fd"tmp\Debug\tank\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt src\tank\DefaultCamera.cpp src\tank\directx.cpp src\tank\Dsutil.cpp src\tank\functions.cpp src\tank\globals.cpp src\tank\InputManager.cpp src\tank\KeyMapper.cpp src\tank\Level.cpp src\tank\Main.cpp src\tank\script.cpp src\tank\config\Config.cpp src\tank\config\ConfigBase.cpp src\tank\config\Language.cpp src\tank\core\Application.cpp src\tank\core\Profiler.cpp src\tank\core\Rotator.cpp src\tank\core\SafePtr.cpp src\tank\core\Timer.cpp src\tank\video\ImageLoader.cpp src\tank\video\RenderDirect3D.cpp src\tank\video\RenderOpenGL.cpp src\tank\video\TextureManager.cpp src\tank\fs\FileSystem.cpp src\tank\fs\MapFile.cpp src\tank\fs\SaveFile.cpp src\tank\gc\2dSprite.cpp src\tank\gc\Actor.cpp src\tank\gc\ai.cpp src\tank\gc\Camera.cpp src\tank\gc\crate.cpp src\tank\gc\GameClasses.cpp src\tank\gc\indicators.cpp src\tank\gc\Light.cpp src\tank\gc\MessageBox.cpp src\tank\gc\Object.cpp src\tank\gc\particles.cpp src\tank\gc\pickup.cpp src\tank\gc\Player.cpp src\tank\gc\projectiles.cpp src\tank\gc\RigidBody.cpp src\tank\gc\RigidBodyDynamic.cpp src\tank\gc\Service.cpp src\tank\gc\Sound.cpp src\tank\gc\Trigger.cpp src\tank\gc\Turrets.cpp src\tank\gc\UserObjects.cpp src\tank\gc\Vehicle.cpp src\tank\gc\Weapons.cpp src\tank\ui\Button.cpp src\tank\ui\Combo.cpp src\tank\ui\ConsoleBuffer.cpp src\tank\ui\Dialog.cpp src\tank\ui\Edit.cpp src\tank\ui\gui.cpp src\tank\ui\gui_campaign.cpp src\tank\ui\gui_desktop.cpp src\tank\ui\gui_editor.cpp src\tank\ui\gui_getfilename.cpp src\tank\ui\gui_mainmenu.cpp src\tank\ui\gui_maplist.cpp src\tank\ui\gui_network.cpp src\tank\ui\gui_scoretable.cpp src\tank\ui\gui_settings.cpp src\tank\ui\gui_widgets.cpp src\tank\ui\GuiManager.cpp src\tank\ui\Interface.cpp src\tank\ui\List.cpp src\tank\ui\ListBase.cpp src\tank\ui\MousePointer.cpp src\tank\ui\Scroll.cpp src\tank\ui\Text.cpp src\tank\ui\Window.cpp src\tank\network\CommonTypes.cpp src\tank\network\ControlPacket.cpp src\tank\network\HttpClient.cpp src\tank\network\init.cpp src\tank\network\LobbyClient.cpp src\tank\network\Peer.cpp src\tank\network\Socket.cpp src\tank\network\TankClient.cpp src\tank\network\TankServer.cpp src\tank\network\Variant.cpp src\tank\sound\MusicPlayer.cpp src\tank\sound\sfx.cpp
+         sfx.cpp
+     1>src\tank\sound\sfx.cpp(30): warning C4244: 'return' : conversion from 'unsigned __int64' to 'long', possible loss of data
+     1>src\tank\sound\sfx.cpp(74): warning C4244: 'initializing' : conversion from 'ogg_int64_t' to 'size_t', possible loss of data
+         MusicPlayer.cpp
+     1>src\tank\sound\MusicPlayer.cpp(136): warning C4244: '+=' : conversion from 'ogg_int64_t' to 'unsigned long', possible loss of data
+     1>src\tank\sound\MusicPlayer.cpp(139): warning C4244: '=' : conversion from 'ogg_int64_t' to 'unsigned long', possible loss of data
+     1>src\tank\sound\MusicPlayer.cpp(142): warning C4244: '=' : conversion from 'ogg_int64_t' to 'unsigned long', possible loss of data
+         Variant.cpp
+         TankServer.cpp
+         TankClient.cpp
+         Socket.cpp
+         Peer.cpp
+         LobbyClient.cpp
+         init.cpp
+         HttpClient.cpp
+         ControlPacket.cpp
+         CommonTypes.cpp
+         Window.cpp
+         Text.cpp
+         Scroll.cpp
+         MousePointer.cpp
+         ListBase.cpp
+         List.cpp
+         Interface.cpp
+         GuiManager.cpp
+         Generating Code...
+         Compiling...
+         gui_widgets.cpp
+         gui_settings.cpp
+         gui_scoretable.cpp
+         gui_network.cpp
+         gui_maplist.cpp
+         gui_mainmenu.cpp
+         gui_getfilename.cpp
+         gui_editor.cpp
+         gui_desktop.cpp
+         gui_campaign.cpp
+         gui.cpp
+         Edit.cpp
+         Dialog.cpp
+         ConsoleBuffer.cpp
+         Combo.cpp
+         Button.cpp
+         Weapons.cpp
+         Vehicle.cpp
+         UserObjects.cpp
+         Turrets.cpp
+         Generating Code...
+         Compiling...
+         Trigger.cpp
+         Sound.cpp
+         Service.cpp
+         RigidBodyDynamic.cpp
+         RigidBody.cpp
+         projectiles.cpp
+         Player.cpp
+         pickup.cpp
+         particles.cpp
+         Object.cpp
+         MessageBox.cpp
+         Light.cpp
+         indicators.cpp
+         GameClasses.cpp
+         crate.cpp
+         Camera.cpp
+         ai.cpp
+         Actor.cpp
+         2dSprite.cpp
+         SaveFile.cpp
+         Generating Code...
+         Compiling...
+         MapFile.cpp
+         FileSystem.cpp
+         TextureManager.cpp
+         RenderOpenGL.cpp
+         RenderDirect3D.cpp
+         ImageLoader.cpp
+         Timer.cpp
+         SafePtr.cpp
+         Rotator.cpp
+         Profiler.cpp
+         Application.cpp
+         Language.cpp
+         ConfigBase.cpp
+         Config.cpp
+         script.cpp
+         Main.cpp
+         Level.cpp
+         KeyMapper.cpp
+         InputManager.cpp
+         globals.cpp
+         Generating Code...
+         Compiling...
+         functions.cpp
+         Dsutil.cpp
+         directx.cpp
+         DefaultCamera.cpp
+         Generating Code...
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /Isrc\tank /Isrc\zlib /Isrc\lua\src /Isrc\pluto /Isrc\oggvorbis\include /I"C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include" /Zi /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D LOGFILE /D NETWORK_DEBUG /D _MBCS /GF /Gm /EHsc /RTCc /RTC1 /MTd /GS /fp:fast /Zc:wchar_t /Zc:forScope /Fo"tmp\Debug\tank\\" /Fd"tmp\Debug\tank\vc100.pdb" /Gd /TC /analyze- /errorReport:prompt src\tank\Md5.c
+         Md5.c
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /Isrc\tank /Isrc\zlib /Isrc\lua\src /Isrc\pluto /Isrc\oggvorbis\include /I"C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include" /Zi /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D LOGFILE /D NETWORK_DEBUG /D _MBCS /GF /Gm /EHsc /RTCc /RTC1 /MTd /GS /fp:fast /Zc:wchar_t /Zc:forScope /Yu"StdAfx.h" /Fp"tmp\Debug\tank\tank.pch" /Fo"tmp\Debug\tank\gui_console.obj" /Fd"tmp\Debug\tank\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt src\tank\ui\Console.cpp
+         Console.cpp
+       ResourceCompile:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /D _DEBUG /l"0x0419" /nologo /fo"tmp\Debug\tank\tank.res" src\tank\res\tank.rc 
+       ManifestResourceCompile:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /nologo /fo"tmp\Debug\tank\tank.exe.embed.manifest.res" tmp\Debug\tank\tank_manifest.rc 
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"out\Debug\tank.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x86" winmm.lib dxguid.lib dsound.lib dinput8.lib Comctl32.lib dxerr.lib ws2_32.lib opengl32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"tmp\Debug\tank\tank.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"tmp\Debug\tank\tank.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"out\Debug\tank.lib" /MACHINE:X86 tmp\Debug\tank\tank.res
+         tmp\Debug\tank\tank.exe.embed.manifest.res
+         tmp\Debug\tank\DefaultCamera.obj
+         tmp\Debug\tank\directx.obj
+         tmp\Debug\tank\Dsutil.obj
+         tmp\Debug\tank\functions.obj
+         tmp\Debug\tank\globals.obj
+         tmp\Debug\tank\InputManager.obj
+         tmp\Debug\tank\KeyMapper.obj
+         tmp\Debug\tank\Level.obj
+         tmp\Debug\tank\Main.obj
+         tmp\Debug\tank\Md5.obj
+         tmp\Debug\tank\script.obj
+         tmp\Debug\tank\stdafx.obj
+         tmp\Debug\tank\Config.obj
+         tmp\Debug\tank\ConfigBase.obj
+         tmp\Debug\tank\Language.obj
+         tmp\Debug\tank\Application.obj
+         tmp\Debug\tank\Profiler.obj
+         tmp\Debug\tank\Rotator.obj
+         tmp\Debug\tank\SafePtr.obj
+         tmp\Debug\tank\Timer.obj
+         tmp\Debug\tank\ImageLoader.obj
+         tmp\Debug\tank\RenderDirect3D.obj
+         tmp\Debug\tank\RenderOpenGL.obj
+         tmp\Debug\tank\TextureManager.obj
+         tmp\Debug\tank\FileSystem.obj
+         tmp\Debug\tank\MapFile.obj
+         tmp\Debug\tank\SaveFile.obj
+         tmp\Debug\tank\2dSprite.obj
+         tmp\Debug\tank\Actor.obj
+         tmp\Debug\tank\ai.obj
+         tmp\Debug\tank\Camera.obj
+         tmp\Debug\tank\crate.obj
+         tmp\Debug\tank\GameClasses.obj
+         tmp\Debug\tank\indicators.obj
+         tmp\Debug\tank\Light.obj
+         tmp\Debug\tank\MessageBox.obj
+         tmp\Debug\tank\Object.obj
+         tmp\Debug\tank\particles.obj
+         tmp\Debug\tank\pickup.obj
+         tmp\Debug\tank\Player.obj
+         tmp\Debug\tank\projectiles.obj
+         tmp\Debug\tank\RigidBody.obj
+         tmp\Debug\tank\RigidBodyDynamic.obj
+         tmp\Debug\tank\Service.obj
+         tmp\Debug\tank\Sound.obj
+         tmp\Debug\tank\Trigger.obj
+         tmp\Debug\tank\Turrets.obj
+         tmp\Debug\tank\UserObjects.obj
+         tmp\Debug\tank\Vehicle.obj
+         tmp\Debug\tank\Weapons.obj
+         tmp\Debug\tank\Button.obj
+         tmp\Debug\tank\Combo.obj
+         tmp\Debug\tank\ConsoleBuffer.obj
+         tmp\Debug\tank\Dialog.obj
+         tmp\Debug\tank\Edit.obj
+         tmp\Debug\tank\gui.obj
+         tmp\Debug\tank\gui_campaign.obj
+         tmp\Debug\tank\gui_desktop.obj
+         tmp\Debug\tank\gui_editor.obj
+         tmp\Debug\tank\gui_getfilename.obj
+         tmp\Debug\tank\gui_mainmenu.obj
+         tmp\Debug\tank\gui_maplist.obj
+         tmp\Debug\tank\gui_network.obj
+         tmp\Debug\tank\gui_scoretable.obj
+         tmp\Debug\tank\gui_settings.obj
+         tmp\Debug\tank\gui_widgets.obj
+         tmp\Debug\tank\GuiManager.obj
+         tmp\Debug\tank\Interface.obj
+         tmp\Debug\tank\List.obj
+         tmp\Debug\tank\ListBase.obj
+         tmp\Debug\tank\MousePointer.obj
+         tmp\Debug\tank\Scroll.obj
+         tmp\Debug\tank\Text.obj
+         tmp\Debug\tank\Window.obj
+         tmp\Debug\tank\CommonTypes.obj
+         tmp\Debug\tank\ControlPacket.obj
+         tmp\Debug\tank\HttpClient.obj
+         tmp\Debug\tank\init.obj
+         tmp\Debug\tank\LobbyClient.obj
+         tmp\Debug\tank\Peer.obj
+         tmp\Debug\tank\Socket.obj
+         tmp\Debug\tank\TankClient.obj
+         tmp\Debug\tank\TankServer.obj
+         tmp\Debug\tank\Variant.obj
+         tmp\Debug\tank\MusicPlayer.obj
+         tmp\Debug\tank\sfx.obj
+         tmp\Debug\tank\gui_console.obj
+         D:\TZOD\branches\work_NC22_modified\game\tmp\Debug\lua.lib
+         D:\TZOD\branches\work_NC22_modified\game\tmp\Debug\oggvorbis.lib
+         D:\TZOD\branches\work_NC22_modified\game\tmp\LIB_Debug\zlib.lib /MACHINE:I386 
+       Manifest:
+         Deleting file "tmp\Debug\tank\tank.exe.embed.manifest".
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /out:"tmp\Debug\tank\tank.exe.embed.manifest" /manifest tmp\Debug\tank\tank.exe.intermediate.manifest
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /nologo /fo"tmp\Debug\tank\tank.exe.embed.manifest.res" tmp\Debug\tank\tank_manifest.rc 
+       LinkEmbedManifest:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"out\Debug\tank.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x86" winmm.lib dxguid.lib dsound.lib dinput8.lib Comctl32.lib dxerr.lib ws2_32.lib opengl32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"tmp\Debug\tank\tank.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"tmp\Debug\tank\tank.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"out\Debug\tank.lib" /MACHINE:X86 tmp\Debug\tank\tank.res
+         tmp\Debug\tank\tank.exe.embed.manifest.res
+         tmp\Debug\tank\DefaultCamera.obj
+         tmp\Debug\tank\directx.obj
+         tmp\Debug\tank\Dsutil.obj
+         tmp\Debug\tank\functions.obj
+         tmp\Debug\tank\globals.obj
+         tmp\Debug\tank\InputManager.obj
+         tmp\Debug\tank\KeyMapper.obj
+         tmp\Debug\tank\Level.obj
+         tmp\Debug\tank\Main.obj
+         tmp\Debug\tank\Md5.obj
+         tmp\Debug\tank\script.obj
+         tmp\Debug\tank\stdafx.obj
+         tmp\Debug\tank\Config.obj
+         tmp\Debug\tank\ConfigBase.obj
+         tmp\Debug\tank\Language.obj
+         tmp\Debug\tank\Application.obj
+         tmp\Debug\tank\Profiler.obj
+         tmp\Debug\tank\Rotator.obj
+         tmp\Debug\tank\SafePtr.obj
+         tmp\Debug\tank\Timer.obj
+         tmp\Debug\tank\ImageLoader.obj
+         tmp\Debug\tank\RenderDirect3D.obj
+         tmp\Debug\tank\RenderOpenGL.obj
+         tmp\Debug\tank\TextureManager.obj
+         tmp\Debug\tank\FileSystem.obj
+         tmp\Debug\tank\MapFile.obj
+         tmp\Debug\tank\SaveFile.obj
+         tmp\Debug\tank\2dSprite.obj
+         tmp\Debug\tank\Actor.obj
+         tmp\Debug\tank\ai.obj
+         tmp\Debug\tank\Camera.obj
+         tmp\Debug\tank\crate.obj
+         tmp\Debug\tank\GameClasses.obj
+         tmp\Debug\tank\indicators.obj
+         tmp\Debug\tank\Light.obj
+         tmp\Debug\tank\MessageBox.obj
+         tmp\Debug\tank\Object.obj
+         tmp\Debug\tank\particles.obj
+         tmp\Debug\tank\pickup.obj
+         tmp\Debug\tank\Player.obj
+         tmp\Debug\tank\projectiles.obj
+         tmp\Debug\tank\RigidBody.obj
+         tmp\Debug\tank\RigidBodyDynamic.obj
+         tmp\Debug\tank\Service.obj
+         tmp\Debug\tank\Sound.obj
+         tmp\Debug\tank\Trigger.obj
+         tmp\Debug\tank\Turrets.obj
+         tmp\Debug\tank\UserObjects.obj
+         tmp\Debug\tank\Vehicle.obj
+         tmp\Debug\tank\Weapons.obj
+         tmp\Debug\tank\Button.obj
+         tmp\Debug\tank\Combo.obj
+         tmp\Debug\tank\ConsoleBuffer.obj
+         tmp\Debug\tank\Dialog.obj
+         tmp\Debug\tank\Edit.obj
+         tmp\Debug\tank\gui.obj
+         tmp\Debug\tank\gui_campaign.obj
+         tmp\Debug\tank\gui_desktop.obj
+         tmp\Debug\tank\gui_editor.obj
+         tmp\Debug\tank\gui_getfilename.obj
+         tmp\Debug\tank\gui_mainmenu.obj
+         tmp\Debug\tank\gui_maplist.obj
+         tmp\Debug\tank\gui_network.obj
+         tmp\Debug\tank\gui_scoretable.obj
+         tmp\Debug\tank\gui_settings.obj
+         tmp\Debug\tank\gui_widgets.obj
+         tmp\Debug\tank\GuiManager.obj
+         tmp\Debug\tank\Interface.obj
+         tmp\Debug\tank\List.obj
+         tmp\Debug\tank\ListBase.obj
+         tmp\Debug\tank\MousePointer.obj
+         tmp\Debug\tank\Scroll.obj
+         tmp\Debug\tank\Text.obj
+         tmp\Debug\tank\Window.obj
+         tmp\Debug\tank\CommonTypes.obj
+         tmp\Debug\tank\ControlPacket.obj
+         tmp\Debug\tank\HttpClient.obj
+         tmp\Debug\tank\init.obj
+         tmp\Debug\tank\LobbyClient.obj
+         tmp\Debug\tank\Peer.obj
+         tmp\Debug\tank\Socket.obj
+         tmp\Debug\tank\TankClient.obj
+         tmp\Debug\tank\TankServer.obj
+         tmp\Debug\tank\Variant.obj
+         tmp\Debug\tank\MusicPlayer.obj
+         tmp\Debug\tank\sfx.obj
+         tmp\Debug\tank\gui_console.obj
+         D:\TZOD\branches\work_NC22_modified\game\tmp\Debug\lua.lib
+         D:\TZOD\branches\work_NC22_modified\game\tmp\Debug\oggvorbis.lib
+         D:\TZOD\branches\work_NC22_modified\game\tmp\LIB_Debug\zlib.lib /MACHINE:I386 
+         tank.vcxproj -> D:\TZOD\branches\work_NC22_modified\game\out\Debug\tank.exe
+       CopyFilesToOutputDirectory:
+         Copying file from "tmp\Debug\tank\tank.pdb" to "out\Debug\tank.pdb".
+       FinalizeBuildStatus:
+         Deleting file "tmp\Debug\tank\tank.unsuccessfulbuild".
+         Touching "tmp\Debug\tank\tank.lastbuildstate".
+     1>Done Building Project "D:\TZOD\branches\work_NC22_modified\game\tank.vcxproj" (rebuild target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:40.35

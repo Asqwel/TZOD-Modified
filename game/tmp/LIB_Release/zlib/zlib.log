@@ -1,0 +1,45 @@
+﻿Build started 09.06.2014 19:26:28.
+     1>Project "D:\TZOD\branches\work_NC22_modified\game\zlib.vcxproj" on node 4 (rebuild target(s)).
+     1>_PrepareForClean:
+         Deleting file "tmp\LIB_Release\zlib\zlib.lastbuildstate".
+       InitializeBuildStatus:
+         Creating "tmp\LIB_Release\zlib\zlib.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /O2 /Oi /Ot /Oy /GL /D WIN32 /D NDEBUG /D _CRT_SECURE_NO_WARNINGS /GF /Gm- /EHsc /MT /GS- /fp:fast /Zc:wchar_t /Zc:forScope /GR- /Fo"tmp\LIB_Release\zlib\\" /Fd"tmp\LIB_Release\zlib\vc100.pdb" /Gd /TC /analyze- /errorReport:prompt src\zlib\adler32.c src\zlib\compress.c src\zlib\crc32.c src\zlib\deflate.c src\zlib\gzio.c src\zlib\infback.c src\zlib\inffast.c src\zlib\inflate.c src\zlib\inftrees.c src\zlib\trees.c src\zlib\uncompr.c src\zlib\zutil.c
+         adler32.c
+         compress.c
+         crc32.c
+         deflate.c
+         gzio.c
+         infback.c
+         inffast.c
+         inflate.c
+         inftrees.c
+         trees.c
+         uncompr.c
+         zutil.c
+       ResourceCompile:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /D NDEBUG /l"0x0409" /Isrc\zlib\win32 /nologo /fo"tmp\LIB_Release\zlib\zlib1.res" src\zlib\win32\zlib1.rc 
+       Lib:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\Lib.exe /OUT:"tmp\LIB_Release\zlib.lib" /NOLOGO /MACHINE:X86 /LTCG tmp\LIB_Release\zlib\zlib1.res
+         tmp\LIB_Release\zlib\adler32.obj
+         tmp\LIB_Release\zlib\compress.obj
+         tmp\LIB_Release\zlib\crc32.obj
+         tmp\LIB_Release\zlib\deflate.obj
+         tmp\LIB_Release\zlib\gzio.obj
+         tmp\LIB_Release\zlib\infback.obj
+         tmp\LIB_Release\zlib\inffast.obj
+         tmp\LIB_Release\zlib\inflate.obj
+         tmp\LIB_Release\zlib\inftrees.obj
+         tmp\LIB_Release\zlib\trees.obj
+         tmp\LIB_Release\zlib\uncompr.obj
+         tmp\LIB_Release\zlib\zutil.obj
+         zlib.vcxproj -> D:\TZOD\branches\work_NC22_modified\game\tmp\LIB_Release\zlib.lib
+       FinalizeBuildStatus:
+         Deleting file "tmp\LIB_Release\zlib\zlib.unsuccessfulbuild".
+         Touching "tmp\LIB_Release\zlib\zlib.lastbuildstate".
+     1>Done Building Project "D:\TZOD\branches\work_NC22_modified\game\zlib.vcxproj" (rebuild target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:05.08

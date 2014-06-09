@@ -1,0 +1,65 @@
+﻿Build started 09.06.2014 19:26:21.
+     1>Project "D:\TZOD\branches\work_NC22_modified\game\oggvorbis.vcxproj" on node 2 (rebuild target(s)).
+     1>_PrepareForClean:
+         Deleting file "tmp\Release\oggvorbis\oggvorbis.lastbuildstate".
+       InitializeBuildStatus:
+         Creating "tmp\Release\oggvorbis\oggvorbis.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /Isrc\oggvorbis\include /Zi /nologo /W3 /WX- /O2 /Oy- /GL /D WIN32 /D NDEBUG /D _LIB /D _CRT_SECURE_NO_WARNINGS /D _MBCS /GF /Gm- /EHsc /MT /GS- /fp:fast /Zc:wchar_t /Zc:forScope /GR- /Fo"tmp\Release\oggvorbis\\" /Fd"tmp\Release\oggvorbis\vc100.pdb" /Gd /TC /wd4244 /wd4305 /analyze- /errorReport:prompt src\oggvorbis\ogg\bitwise.c src\oggvorbis\ogg\framing.c src\oggvorbis\vorbis\analysis.c src\oggvorbis\vorbis\bitrate.c src\oggvorbis\vorbis\block.c src\oggvorbis\vorbis\codebook.c src\oggvorbis\vorbis\envelope.c src\oggvorbis\vorbis\floor0.c src\oggvorbis\vorbis\floor1.c src\oggvorbis\vorbis\info.c src\oggvorbis\vorbis\lookup.c src\oggvorbis\vorbis\lpc.c src\oggvorbis\vorbis\lsp.c src\oggvorbis\vorbis\mapping0.c src\oggvorbis\vorbis\mdct.c src\oggvorbis\vorbis\psy.c src\oggvorbis\vorbis\registry.c src\oggvorbis\vorbis\res0.c src\oggvorbis\vorbis\sharedbook.c src\oggvorbis\vorbis\smallft.c src\oggvorbis\vorbis\synthesis.c src\oggvorbis\vorbis\vorbisfile.c src\oggvorbis\vorbis\window.c
+         bitwise.c
+         framing.c
+         analysis.c
+         bitrate.c
+         block.c
+         codebook.c
+         envelope.c
+         floor0.c
+         floor1.c
+         info.c
+         lookup.c
+         lpc.c
+         lsp.c
+         mapping0.c
+         mdct.c
+         psy.c
+         registry.c
+         res0.c
+         sharedbook.c
+         smallft.c
+         Compiling...
+         synthesis.c
+         vorbisfile.c
+         window.c
+       Lib:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\Lib.exe /OUT:"tmp\Release\oggvorbis.lib" /NOLOGO /MACHINE:X86 /LTCG tmp\Release\oggvorbis\bitwise.obj
+         tmp\Release\oggvorbis\framing.obj
+         tmp\Release\oggvorbis\analysis.obj
+         tmp\Release\oggvorbis\bitrate.obj
+         tmp\Release\oggvorbis\block.obj
+         tmp\Release\oggvorbis\codebook.obj
+         tmp\Release\oggvorbis\envelope.obj
+         tmp\Release\oggvorbis\floor0.obj
+         tmp\Release\oggvorbis\floor1.obj
+         tmp\Release\oggvorbis\info.obj
+         tmp\Release\oggvorbis\lookup.obj
+         tmp\Release\oggvorbis\lpc.obj
+         tmp\Release\oggvorbis\lsp.obj
+         tmp\Release\oggvorbis\mapping0.obj
+         tmp\Release\oggvorbis\mdct.obj
+         tmp\Release\oggvorbis\psy.obj
+         tmp\Release\oggvorbis\registry.obj
+         tmp\Release\oggvorbis\res0.obj
+         tmp\Release\oggvorbis\sharedbook.obj
+         tmp\Release\oggvorbis\smallft.obj
+         tmp\Release\oggvorbis\synthesis.obj
+         tmp\Release\oggvorbis\vorbisfile.obj
+         tmp\Release\oggvorbis\window.obj
+         oggvorbis.vcxproj -> D:\TZOD\branches\work_NC22_modified\game\tmp\Release\oggvorbis.lib
+       FinalizeBuildStatus:
+         Deleting file "tmp\Release\oggvorbis\oggvorbis.unsuccessfulbuild".
+         Touching "tmp\Release\oggvorbis\oggvorbis.lastbuildstate".
+     1>Done Building Project "D:\TZOD\branches\work_NC22_modified\game\oggvorbis.vcxproj" (rebuild target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:09.46

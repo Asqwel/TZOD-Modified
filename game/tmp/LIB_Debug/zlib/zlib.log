@@ -1,0 +1,46 @@
+﻿Build started 07.06.2014 1:40:59.
+     1>Project "D:\TZOD\branches\work_NC22_modified\game\zlib.vcxproj" on node 4 (rebuild target(s)).
+     1>_PrepareForClean:
+         Deleting file "tmp\LIB_Debug\zlib\zlib.lastbuildstate".
+       InitializeBuildStatus:
+         Creating "tmp\LIB_Debug\zlib\zlib.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CRT_SECURE_NO_WARNINGS /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"tmp\LIB_Debug\zlib\\" /Fd"tmp\LIB_Debug\zlib\vc100.pdb" /Gd /TC /analyze- /errorReport:prompt src\zlib\adler32.c src\zlib\compress.c src\zlib\crc32.c src\zlib\deflate.c src\zlib\gzio.c src\zlib\infback.c src\zlib\inffast.c src\zlib\inflate.c src\zlib\inftrees.c src\zlib\trees.c src\zlib\uncompr.c src\zlib\zutil.c
+         zutil.c
+         uncompr.c
+         trees.c
+         inftrees.c
+         inflate.c
+         inffast.c
+         infback.c
+         gzio.c
+         deflate.c
+         crc32.c
+         compress.c
+         adler32.c
+         Generating Code...
+       ResourceCompile:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /D _DEBUG /l"0x0419" /Isrc\zlib\win32 /nologo /fo"tmp\LIB_Debug\zlib\zlib1.res" src\zlib\win32\zlib1.rc 
+       Lib:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\Lib.exe /OUT:"tmp\LIB_Debug\zlib.lib" /NOLOGO /MACHINE:X86 tmp\LIB_Debug\zlib\zlib1.res
+         tmp\LIB_Debug\zlib\adler32.obj
+         tmp\LIB_Debug\zlib\compress.obj
+         tmp\LIB_Debug\zlib\crc32.obj
+         tmp\LIB_Debug\zlib\deflate.obj
+         tmp\LIB_Debug\zlib\gzio.obj
+         tmp\LIB_Debug\zlib\infback.obj
+         tmp\LIB_Debug\zlib\inffast.obj
+         tmp\LIB_Debug\zlib\inflate.obj
+         tmp\LIB_Debug\zlib\inftrees.obj
+         tmp\LIB_Debug\zlib\trees.obj
+         tmp\LIB_Debug\zlib\uncompr.obj
+         tmp\LIB_Debug\zlib\zutil.obj
+         zlib.vcxproj -> D:\TZOD\branches\work_NC22_modified\game\tmp\LIB_Debug\zlib.lib
+       FinalizeBuildStatus:
+         Deleting file "tmp\LIB_Debug\zlib\zlib.unsuccessfulbuild".
+         Touching "tmp\LIB_Debug\zlib\zlib.lastbuildstate".
+     1>Done Building Project "D:\TZOD\branches\work_NC22_modified\game\zlib.vcxproj" (rebuild target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:01.45

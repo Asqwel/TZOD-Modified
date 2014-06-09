@@ -1,0 +1,80 @@
+﻿Build started 07.06.2014 1:40:59.
+     1>Project "D:\TZOD\branches\work_NC22_modified\game\lua.vcxproj" on node 3 (rebuild target(s)).
+     1>_PrepareForClean:
+         Deleting file "tmp\Debug\lua\lua.lastbuildstate".
+       InitializeBuildStatus:
+         Creating "tmp\Debug\lua\lua.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _CRT_SECURE_NO_DEPRECATE /D _MBCS /Gm /EHsc /RTCc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /GR- /Fo"tmp\Debug\lua\\" /Fd"tmp\Debug\lua\vc100.pdb" /Gd /TC /analyze- /errorReport:prompt src\lua\src\lbaselib.c src\lua\src\ldblib.c src\lua\src\liolib.c src\lua\src\lmathlib.c src\lua\src\loadlib.c src\lua\src\loslib.c src\lua\src\lstrlib.c src\lua\src\ltablib.c src\lua\src\lapi.c src\lua\src\lauxlib.c src\lua\src\lcode.c src\lua\src\ldebug.c src\lua\src\ldo.c src\lua\src\ldump.c src\lua\src\lfunc.c src\lua\src\lgc.c src\lua\src\llex.c src\lua\src\lmem.c src\lua\src\lobject.c src\lua\src\lopcodes.c src\lua\src\lparser.c src\lua\src\lstate.c src\lua\src\lstring.c src\lua\src\ltable.c src\lua\src\ltm.c src\lua\src\lundump.c src\lua\src\lvm.c src\lua\src\lzio.c
+         lzio.c
+         lvm.c
+         lundump.c
+         ltm.c
+         ltable.c
+         lstring.c
+         lstate.c
+         lparser.c
+         lopcodes.c
+         lobject.c
+         lmem.c
+         llex.c
+         lgc.c
+         lfunc.c
+         ldump.c
+         ldo.c
+         ldebug.c
+         lcode.c
+         lauxlib.c
+         lapi.c
+         Generating Code...
+         Compiling...
+         ltablib.c
+         lstrlib.c
+         loslib.c
+         loadlib.c
+         lmathlib.c
+         liolib.c
+         ldblib.c
+         lbaselib.c
+         Generating Code...
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /Isrc\lua\src /Zi /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _CRT_SECURE_NO_DEPRECATE /D _MBCS /Gm /EHsc /RTCc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /GR- /Fo"tmp\Debug\lua\\" /Fd"tmp\Debug\lua\vc100.pdb" /Gd /TC /analyze- /errorReport:prompt src\pluto\pluto.c
+         pluto.c
+       Lib:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\Lib.exe /OUT:"tmp\Debug\lua.lib" /NOLOGO tmp\Debug\lua\lbaselib.obj
+         tmp\Debug\lua\ldblib.obj
+         tmp\Debug\lua\liolib.obj
+         tmp\Debug\lua\lmathlib.obj
+         tmp\Debug\lua\loadlib.obj
+         tmp\Debug\lua\loslib.obj
+         tmp\Debug\lua\lstrlib.obj
+         tmp\Debug\lua\ltablib.obj
+         tmp\Debug\lua\pluto.obj
+         tmp\Debug\lua\lapi.obj
+         tmp\Debug\lua\lauxlib.obj
+         tmp\Debug\lua\lcode.obj
+         tmp\Debug\lua\ldebug.obj
+         tmp\Debug\lua\ldo.obj
+         tmp\Debug\lua\ldump.obj
+         tmp\Debug\lua\lfunc.obj
+         tmp\Debug\lua\lgc.obj
+         tmp\Debug\lua\llex.obj
+         tmp\Debug\lua\lmem.obj
+         tmp\Debug\lua\lobject.obj
+         tmp\Debug\lua\lopcodes.obj
+         tmp\Debug\lua\lparser.obj
+         tmp\Debug\lua\lstate.obj
+         tmp\Debug\lua\lstring.obj
+         tmp\Debug\lua\ltable.obj
+         tmp\Debug\lua\ltm.obj
+         tmp\Debug\lua\lundump.obj
+         tmp\Debug\lua\lvm.obj
+         tmp\Debug\lua\lzio.obj
+         lua.vcxproj -> D:\TZOD\branches\work_NC22_modified\game\tmp\Debug\lua.lib
+       FinalizeBuildStatus:
+         Deleting file "tmp\Debug\lua\lua.unsuccessfulbuild".
+         Touching "tmp\Debug\lua\lua.lastbuildstate".
+     1>Done Building Project "D:\TZOD\branches\work_NC22_modified\game\lua.vcxproj" (rebuild target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:02.64
