@@ -1216,7 +1216,36 @@ int luaT_rotateobj(lua_State *L)
 	return 0;
 }
 
+int luaT_getpowervalue(lua_State *L)
+{
+	int n = lua_gettop(L);
+	if ( 1 != n )
+	{
+		return luaL_error(L, "1 argument expected; got %d", n);
+	}
+	
+	GC_RigidBodyDynamic *who = luaT_checkobjectT<GC_RigidBodyDynamic>(L, 1);
+	float pow = who->GetForce().len();
+	lua_pushnumber(L, pow);
+	return 1;
+}
 
+int luaT_getpowerdir(lua_State *L)
+{
+	int n = lua_gettop(L);
+	if ( 1 != n )
+	{
+		return luaL_error(L, "1 argument expected; got %d", n);
+	}
+	
+	GC_RigidBodyDynamic *who = luaT_checkobjectT<GC_RigidBodyDynamic>(L, 1);
+	float dir = who->GetForce().Angle();
+	dir = abs(-dir);
+	lua_pushnumber(L, dir);
+	return 1;
+}
+
+//FIXME
 int luaT_findobj(lua_State *L)
 {
 	int n = lua_gettop(L);
@@ -1240,11 +1269,11 @@ int luaT_findobj(lua_State *L)
 			if( rr < rr_min )
 			{
 				luaT_pushobject(L, obj);
-				return 0;
+				return 1;
 			}
 		}
 	}
-	return 1;
+	return 0;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1349,6 +1378,8 @@ lua_State* script_open(void)
 	lua_register(L, "pushobj",  luaT_pushobj);
 	lua_register(L, "rotateobj",  luaT_rotateobj);
 	lua_register(L, "findobj",  luaT_findobj);
+	lua_register(L, "getpowervalue", luaT_getpowervalue);
+	lua_register(L, "getpowerdir", luaT_getpowerdir);
 
 	//
 	// init the command queue

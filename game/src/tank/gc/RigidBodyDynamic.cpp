@@ -549,6 +549,8 @@ float GC_RigidBodyDynamic::Energy() const
 	return e;
 }
 
+vec2d GC_RigidBodyDynamic::GetForce() const {	return _external_force;	}
+
 void GC_RigidBodyDynamic::Sync(GC_RigidBodyDynamic *src)
 {
 //	GC_RigidBodyStatic::Sync(src);
