@@ -111,7 +111,7 @@ public:
 	void ApplyImpulse(const vec2d &impulse);
 	void ApplyImpulse(const vec2d &impulse, const vec2d &origin);
 	
-	vec2d GetForce() const;
+	vec2d GetForce() const {	return _lv;	}
 
 	//--------------------------------
 
