@@ -6,6 +6,8 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
+class GC_Projectile;
+
 struct AIWEAPSETTINGS
 {
 	float fMaxAttackAngleCos;
@@ -91,7 +93,7 @@ public:
 	virtual void SetCrosshair();
 
 	virtual void Fire() = 0;
-	virtual void OnFire();
+	virtual void OnFire(GC_Projectile *proj);
 
 	virtual void TimeStepFixed(float dt);
 	virtual void TimeStepFloat(float dt);

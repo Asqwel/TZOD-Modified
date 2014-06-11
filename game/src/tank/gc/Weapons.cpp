@@ -324,44 +324,72 @@ void GC_Weapon::TimeStepFloat(float dt)
 	}
 }
 
-void GC_Weapon::OnFire()
+void GC_Weapon::OnFire(GC_Projectile *proj)
 {
 	if( !_scriptOnFire.empty() )
 	{
-		std::stringstream buf;
-		buf << "return function(self)";
-		buf << _scriptOnFire;
-		buf << "\nend";
+		if (!proj)
+		{
+			std::stringstream buf;
+			buf << "return function(self)";
+			buf << _scriptOnFire;
+			buf << "\nend";
 
-		if( luaL_loadstring(g_env.L, buf.str().c_str()) )
-		{
-			GetConsole().Printf(1, "OnFire: %s", lua_tostring(g_env.L, -1));
-			lua_pop(g_env.L, 1); // pop the error message from the stack
-		}
-		else
-		{
-			if( lua_pcall(g_env.L, 0, 1, 0) )
+			if( luaL_loadstring(g_env.L, buf.str().c_str()) )
 			{
-				GetConsole().WriteLine(1, lua_tostring(g_env.L, -1));
+				GetConsole().Printf(1, "OnFire: %s", lua_tostring(g_env.L, -1));
 				lua_pop(g_env.L, 1); // pop the error message from the stack
 			}
 			else
 			{
-				luaT_pushobject(g_env.L, this);
-				if( lua_pcall(g_env.L, 1, 0, 0) )
+				if( lua_pcall(g_env.L, 0, 1, 0) )
 				{
 					GetConsole().WriteLine(1, lua_tostring(g_env.L, -1));
 					lua_pop(g_env.L, 1); // pop the error message from the stack
 				}
+				else
+				{
+					luaT_pushobject(g_env.L, this);
+					if( lua_pcall(g_env.L, 1, 0, 0) )
+					{
+						GetConsole().WriteLine(1, lua_tostring(g_env.L, -1));
+						lua_pop(g_env.L, 1); // pop the error message from the stack
+					}
+				}
+			}
+		}
+		else
+		{
+			std::stringstream buf;
+			buf << "return function(self,proj)";
+			buf << _scriptOnFire;
+			buf << "\nend";
+
+			if( luaL_loadstring(g_env.L, buf.str().c_str()) )
+			{
+				GetConsole().Printf(1, "OnFire: %s", lua_tostring(g_env.L, -1));
+				lua_pop(g_env.L, 1); // pop the error message from the stack
+			}
+			else
+			{
+				if( lua_pcall(g_env.L, 0, 1, 0) )
+				{
+					GetConsole().WriteLine(1, lua_tostring(g_env.L, -1));
+					lua_pop(g_env.L, 1); // pop the error message from the stack
+				}
+				else
+				{
+					luaT_pushobject(g_env.L, this);
+					luaT_pushobject(g_env.L, proj);
+					if( lua_pcall(g_env.L, 2, 0, 0) )
+					{
+						GetConsole().WriteLine(1, lua_tostring(g_env.L, -1));
+						lua_pop(g_env.L, 1); // pop the error message from the stack
+					}
+				}
 			}
 		}
 	}
-	GetConsole().Printf(1, "OnFire: %f", GetRealAngle());
-}
-
-void GC_Weapon::Fire()
-{
-	OnFire();
 }
 
 float GC_Weapon::GetAngle() const
@@ -456,20 +484,21 @@ void GC_Weap_RocketLauncher::Fire()
 	{
 		if( _time >= _time_shot )
 		{
-			GC_Weapon::Fire();
 			float dy = (((float)(g_level->net_rand()%(_nshots_total+1)) - 0.5f) / (float)_nshots_total - 0.5f) * 18.0f;
 			_fePos.Set(13, dy);
 
 			float ax = dir.x * 15.0f + dy * dir.y;
 			float ay = dir.y * 15.0f - dy * dir.x;
 
-			new GC_Rocket(GetCarrier()->GetPos() + vec2d(ax, ay),
+			GC_Projectile *proj = new GC_Rocket(GetCarrier()->GetPos() + vec2d(ax, ay),
 			              Vec2dAddDirection(dir, vec2d(g_level->net_frand(0.1f) - 0.05f)) * SPEED_ROCKET,
 			              GetCarrier(), GetCarrier()->GetOwner(), _advanced);
 
 			_time   = 0;
 			_nshots = 0;
 			_firing = false;
+			
+			GC_Weapon::OnFire(proj);
 
 			_fireEffect->SetVisible(true);
 		}
@@ -494,9 +523,11 @@ void GC_Weap_RocketLauncher::Fire()
 				float ax = dir.x * 15.0f + dy * dir.y;
 				float ay = dir.y * 15.0f - dy * dir.x;
 
-				new GC_Rocket( GetCarrier()->GetPos() + vec2d(ax, ay),
+				GC_Projectile *proj = new GC_Rocket( GetCarrier()->GetPos() + vec2d(ax, ay),
 				               Vec2dAddDirection(dir, vec2d(g_level->net_frand(0.1f) - 0.05f)) * SPEED_ROCKET,
 				               GetCarrier(), GetCarrier()->GetOwner(), _advanced );
+							   
+				GC_Weapon::OnFire(proj);
 
 				_time = 0;
 				_fireEffect->SetVisible(true);
@@ -505,7 +536,6 @@ void GC_Weap_RocketLauncher::Fire()
 
 		if( _time >= _timeReload )
 		{
-			GC_Weapon::Fire();
 			_firing = true;
 			_time   = 0;
 		}
@@ -650,9 +680,11 @@ void GC_Weap_AutoCannon::Fire()
 					float ax = dir.x * 17.0f - dy * dir.y;
 					float ay = dir.y * 17.0f + dy * dir.x;
 
-					new GC_ACBullet(GetCarrier()->GetPos() + vec2d(ax, ay),
+					GC_Projectile *proj = new GC_ACBullet(GetCarrier()->GetPos() + vec2d(ax, ay),
 									dir * SPEED_ACBULLET,
 									GetCarrier(), GetCarrier()->GetOwner(), _advanced);
+									
+					GC_Weapon::OnFire(proj);
 				}
 
 				_time = 0;
@@ -660,8 +692,6 @@ void GC_Weap_AutoCannon::Fire()
 				_fireEffect->SetVisible(true);
 
 				PLAY(SND_ACShoot, GetPos());
-				
-				GC_Weapon::Fire();
 			}
 		}
 		else
@@ -681,16 +711,17 @@ void GC_Weap_AutoCannon::Fire()
 				float ax = dir.x * 17.0f - dy * dir.y;
 				float ay = dir.y * 17.0f + dy * dir.x;
 
-				new GC_ACBullet(GetCarrier()->GetPos() + vec2d(ax, ay),
+				GC_Projectile *proj = new GC_ACBullet(GetCarrier()->GetPos() + vec2d(ax, ay),
 								Vec2dAddDirection(dir, vec2d(g_level->net_frand(0.02f) - 0.01f)) * SPEED_ACBULLET,
 								GetCarrier(), GetCarrier()->GetOwner(), _advanced );
 
+				GC_Weapon::OnFire(proj);
+								
 				_time = 0;
 				_fePos.Set(17.0f, -dy);
 				_fireEffect->SetVisible(true);
 
 				PLAY(SND_ACShoot, GetPos());
-				GC_Weapon::Fire();
 			}
 		}
 	}
@@ -794,7 +825,7 @@ void GC_Weap_Cannon::Fire()
 		GC_Vehicle * const veh = static_cast<GC_Vehicle*>(GetCarrier());
 		const vec2d &dir = GetDirectionReal();
 
-		new GC_TankBullet(GetPos() + dir * 17.0f, 
+		GC_Projectile *proj = new GC_TankBullet(GetPos() + dir * 17.0f, 
 			dir * SPEED_TANKBULLET + g_level->net_vrand(50), veh, veh->GetOwner(), _advanced);
 
 		if( !_advanced )
@@ -807,7 +838,7 @@ void GC_Weap_Cannon::Fire()
 
 		_fireEffect->SetVisible(true);
 		
-		GC_Weapon::Fire();
+		GC_Weapon::OnFire(proj);
 	}
 }
 
@@ -891,12 +922,12 @@ void GC_Weap_Plazma::Fire()
 	if( GetCarrier() && _time >= _timeReload )
 	{
 		const vec2d &a = GetDirectionReal();
-		new GC_PlazmaClod(GetPos() + a * 15.0f,
+		GC_Projectile *proj = new GC_PlazmaClod(GetPos() + a * 15.0f,
 			a * SPEED_PLAZMA + g_level->net_vrand(20),
 			GetCarrier(), GetCarrier()->GetOwner(), _advanced);
 		_time = 0;
 		_fireEffect->SetVisible(true);
-		GC_Weapon::Fire();
+		GC_Weapon::OnFire(proj);
 	}
 }
 
@@ -960,12 +991,12 @@ void GC_Weap_Gauss::Fire()
 	if( GetCarrier() && _time >= _timeReload )
 	{
 		const vec2d &dir = GetDirectionReal();
-		new GC_GaussRay(vec2d(GetPos().x + dir.x + 5 * dir.y, GetPos().y + dir.y - 5 * dir.x),
+		GC_Projectile *proj = new GC_GaussRay(vec2d(GetPos().x + dir.x + 5 * dir.y, GetPos().y + dir.y - 5 * dir.x),
 			dir * SPEED_GAUSS, GetCarrier(), GetCarrier()->GetOwner(), _advanced );
 
 		_time = 0;
 		_fireEffect->SetVisible(true);
-		GC_Weapon::Fire();
+		GC_Weapon::OnFire(proj);
 	}
 }
 
@@ -1101,7 +1132,7 @@ void GC_Weap_Ram::Fire()
 		{
 			owner->ApplyForce(GetDirectionReal() * 2000);
 		}
-		GC_Weapon::Fire();
+		GC_Weapon::OnFire(NULL);
 	}
 }
 
@@ -1293,11 +1324,11 @@ void GC_Weap_BFG::Fire()
 		if( _time_ready >= 0.7f || _advanced )
 		{
 			const vec2d &a = GetDirectionReal();
-			new GC_BfgCore(GetPos() + a * 16.0f, a * SPEED_BFGCORE,
+			GC_Projectile *proj = new GC_BfgCore(GetPos() + a * 16.0f, a * SPEED_BFGCORE,
 				GetCarrier(), GetCarrier()->GetOwner(), _advanced );
 			_time_ready = 0;
 			_time = 0;
-			GC_Weapon::Fire();
+			GC_Weapon::OnFire(proj);
 		}
 	}
 }
@@ -1393,11 +1424,12 @@ void GC_Weap_Ripper::Fire()
 	if( GetCarrier() && _time >= _timeReload )
 	{
 		const vec2d &a = GetDirectionReal();
-		new GC_Disk(GetPos() - a * 9.0f, a * SPEED_DISK + g_level->net_vrand(10),
+		GC_Projectile *proj = new GC_Disk(GetPos() - a * 9.0f, a * SPEED_DISK + g_level->net_vrand(10),
 			GetCarrier(), GetCarrier()->GetOwner(), _advanced);
 		PLAY(SND_DiskFire, GetPos());
 		_time = 0;
-		GC_Weapon::Fire();
+		
+		GC_Weapon::OnFire(proj);
 	}
 }
 
@@ -1590,7 +1622,7 @@ void GC_Weap_Minigun::TimeStepFixed(float dt)
 				}
 
 				GC_Bullet *tmp = new GC_Bullet(GetPos() + a * 18.0f, a * SPEED_BULLET, GetCarrier(), GetCarrier()->GetOwner(), _advanced );
-				GC_Weapon::Fire();
+				GC_Weapon::OnFire(tmp);
 				tmp->TimeStepFixed(_timeShot);
 			}
 
@@ -1725,7 +1757,7 @@ void GC_Weap_Zippo::TimeStepFixed(float dt)
 				tmp->SetLifeTime(_timeFire);
 				tmp->SetHealOwner(_advanced);
 				tmp->SetSetFire(true);
-				GC_Weapon::Fire();
+				GC_Weapon::OnFire(tmp);
 			}
 		}
 		else
