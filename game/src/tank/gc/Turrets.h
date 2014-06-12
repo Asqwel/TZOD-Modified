@@ -62,6 +62,7 @@ protected:
 	virtual void CalcOutstrip(const GC_Vehicle *target, vec2d &fake) = 0;
 	virtual void Fire() = 0;
 	bool IsTargetVisible(GC_Vehicle* target, GC_RigidBodyStatic** pObstacle);
+	bool IsTargetFar(GC_Vehicle* target);
 	virtual void TargetLost();
 	GC_Vehicle* EnumTargets();
 	void SelectTarget(const SafePtr<GC_Vehicle> &target);
@@ -215,6 +216,41 @@ public:
 	GC_TurretGauss(float x, float y);
 	GC_TurretGauss(FromFile);
 	virtual ~GC_TurretGauss();
+
+	virtual void TargetLost();
+
+	virtual unsigned char GetPassability() const { return 1; }
+
+	virtual float GetDefaultHealth() const { return 250; }
+	virtual void Serialize(SaveFile &f);
+
+	virtual void CalcOutstrip(const GC_Vehicle *target, vec2d &fake);
+	virtual void Fire();
+
+	virtual void TimeStepFixed(float dt);
+};
+
+///////////////////////////////////////////////////////////////////////////////
+//Zippo turret By VIRUS
+
+class GC_TurretZippo : public GC_TurretBunker
+{
+	DECLARE_SELF_REGISTRATION(GC_TurretZippo);
+
+private:
+	SafePtr<GC_Sound> _fireSound;
+	bool  _firing;
+	float _timeFire;
+	float _timeShot;
+	float _timeBurn;
+
+public:
+	GC_TurretZippo(float x, float y);
+	GC_TurretZippo(FromFile);
+	virtual ~GC_TurretZippo();
+	virtual void Kill();
+//	virtual void OnDestroy();
+//	virtual void Boom();
 
 	virtual void TargetLost();
 

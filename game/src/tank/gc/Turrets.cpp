@@ -163,6 +163,14 @@ bool GC_Turret::IsTargetVisible(GC_Vehicle* target, GC_RigidBodyStatic** pObstac
 	return true;
 }
 
+bool GC_Turret::IsTargetFar(GC_Vehicle* target)
+{
+	if( sqrt( ((target->GetPos().x - GetPos().x) * (target->GetPos().x - GetPos().x)) + 
+		      ((target->GetPos().y - GetPos().y) * (target->GetPos().y - GetPos().y)) ) > _sight)
+		return true;
+	return false;
+}
+
 void GC_Turret::MoveTo(const vec2d &pos)
 {
 	_rotateSound->MoveTo(pos);
@@ -866,5 +874,137 @@ void GC_TurretGauss::TimeStepFixed(float dt)
 	_time += dt;
 }
 
+////////////////////////////////////////////////////////////////////
+//Zippo turret by VIRUS
 
+IMPLEMENT_SELF_REGISTRATION(GC_TurretZippo)
+{
+	ED_TURRET( "turret_zippo", "obj_turret_zippo" );
+	return true;
+}
+
+GC_TurretZippo::GC_TurretZippo(float x, float y)
+  : GC_TurretBunker(x, y, "turret_zippo_wake")
+  , _fireSound(new GC_Sound(SND_RamEngine, SMODE_STOP, GetPos()))
+{
+	_delta_angle = 0.03f; // shooting accuracy
+	_rotator.reset(0, 0, 10.0f, 30.0f, 60.0f);
+
+	_firing = false;
+	_timeBurn = 0;
+	_timeShot = 0;
+	_timeFire = 0;
+
+	_time_wait_max = 0.10f;
+	_time_wake_max = 0.45f;
+
+	_weaponSprite->SetTexture("turret_zippo");
+
+	g_level->_field.ProcessObject(this, true);
+	SetHealth(GetDefaultHealth(), GetDefaultHealth());
+}
+
+GC_TurretZippo::GC_TurretZippo(FromFile)
+  : GC_TurretBunker(FromFile())
+{
+}
+
+void GC_TurretZippo::TargetLost()
+{
+	_timeShot = 0;
+	_firing   = false;
+	GC_TurretBunker::TargetLost();
+}
+
+void GC_TurretZippo::Serialize(SaveFile &f)
+{
+	GC_TurretBunker::Serialize(f);
+	f.Serialize(_firing);
+	f.Serialize(_timeFire);
+	f.Serialize(_timeShot);
+	f.Serialize(_timeBurn);
+	f.Serialize(_fireSound);
+}
+
+GC_TurretZippo::~GC_TurretZippo()
+{
+}
+
+void GC_TurretZippo::CalcOutstrip(const GC_Vehicle *target, vec2d &fake)
+{
+	g_level->CalcOutstrip(GetPos(), SPEED_TURRET_FIRE, target->GetPos(), target->_lv, fake);
+}
+
+/*void GC_TurretZippo::Boom()
+{
+//	for( short int i = 0; i < 4; ++i )
+//	{
+		for( float j = 1; j > 0; j -= 0.02f )
+		{
+			vec2d a( (rand() % 6) + ( (rand() % 28) /100) );
+			GC_FireSpark *tmp = new GC_FireSpark(GetPos(), 
+							a * SPEED_FIRE, this, NULL, false);
+			tmp->TimeStepFixed(j);
+			tmp->SetLifeTime(1);
+			tmp->SetHealOwner(true);
+			tmp->SetSetFire(true);
+		}
+//	}
+}
+
+void GC_TurretZippo::OnDestroy()
+{
+	GC_TurretZippo::Boom();
+}*/
+
+void GC_TurretZippo::Kill()
+{
+	SAFE_KILL(_fireSound);
+	GC_TurretBunker::Kill();
+}
+
+void GC_TurretZippo::Fire()
+{
+	_firing = true; //Разрешаем жжечь
+}
+
+void GC_TurretZippo::TimeStepFixed(float dt)
+{
+	GC_TurretBunker::TimeStepFixed(dt);
+
+	if( _firing )
+	{
+		ASSERT_TYPE(GetRawPtr(_fireSound), GC_Sound);
+		_fireSound->Pause(false);
+
+		_timeShot += dt;
+		_timeFire = __min(_timeFire + dt, WEAP_ZIPPO_TIME_RELAX);
+
+		for( ; _timeShot > 0; _timeShot -= 0.02f )
+		{
+			vec2d a(_dir);
+			GC_FireSpark *tmp = new GC_FireSpark(GetPos() + a * 31.9f, 
+					a * SPEED_TURRET_FIRE, this, NULL, false);
+			tmp->TimeStepFixed(_timeShot);
+			tmp->SetLifeTime(_timeFire);
+			tmp->SetHealOwner(true);
+			tmp->SetSetFire(true); //Зачем она нужна?
+
+			if( IsTargetFar(GetRawPtr(_target)) )
+			{
+				GC_TurretZippo::TargetLost();
+				GC_TurretBunker::WakeDown();
+			}
+		}
+
+		_firing = false;
+	}
+	else
+	{
+		ASSERT_TYPE(GetRawPtr(_fireSound), GC_Sound);
+		_fireSound->Pause(true);
+	}
+}
+
+////////////////////////////////////////////////////////////////////
 // end of file
