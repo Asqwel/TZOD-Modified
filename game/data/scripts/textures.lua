@@ -92,6 +92,15 @@ return {
    }
 },
 {
+   file="textures/turrets/fireturret.tga",
+   content={
+     -- weapons --
+     turret_zippo={left=0, top=384, right=64, bottom=448},
+     -- platforms --
+     turret_zippo_wake={left=0, top=0, right=256, bottom=384, xframes=4, yframes=6},
+   }
+},
+{
    file="textures/particles/particles.tga",
    content={
      particle_brick={left=0, top=0, right=128, bottom=128, xframes=8, yframes=8},
