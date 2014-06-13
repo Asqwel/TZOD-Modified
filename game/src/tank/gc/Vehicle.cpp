@@ -958,13 +958,14 @@ void GC_Vehicle::MyPropertySet::MyExchange(bool applyToObject)
 				break;
 			}				
 		}
-		_propDir.SetFloatValue(tmp->GetAngle());
+		tmp->_angleNormal = tmp->GetAngle();
+		_propDir.SetFloatValue(tmp->_angleNormal);
 	}
 }
 
 float GC_Vehicle::GetAngle() const
 {
-	return abs(-(GetDirection().Angle()));
+	return PI2 - GetDirection().Angle();
 }
 
 float GC_Vehicle::GetRealAngle() const
@@ -974,7 +975,7 @@ float GC_Vehicle::GetRealAngle() const
 
 void GC_Vehicle::SetAngle(float _angle)
 {
-	float angle = abs(-_angle);
+	float angle = abs(PI2 - _angle);
 	SetDirection(vec2d(angle));
 	_angleNormal = angle;
 }

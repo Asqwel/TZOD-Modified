@@ -77,13 +77,15 @@ void GC_Weapon::MyPropertySet::MyExchange(bool applyToObject)
 	{
 		obj->_timeStay = (float) _propTimeStay.GetIntValue() / 1000.0f;
 		obj->_scriptOnFire = _propOnFire.GetStringValue();
-		obj->SetAngle(_propDir.GetFloatValue());
+		obj->_angleNormal = _propDir.GetFloatValue();
+		obj->SetAngle(obj->_angleNormal);
 	}
 	else
 	{
 		_propTimeStay.SetIntValue(int(obj->_timeStay * 1000.0f + 0.5f));
 		_propOnFire.SetStringValue(obj->_scriptOnFire);
-		_propDir.SetFloatValue(obj->GetAngle());
+		obj->_angleNormal = obj->GetAngle();
+		_propDir.SetFloatValue(obj->_angleNormal);
 	}
 }
 
@@ -394,7 +396,7 @@ void GC_Weapon::OnFire(GC_Projectile *proj)
 
 float GC_Weapon::GetAngle() const
 {
-	return abs(-(GetDirection().Angle()));
+	return PI2 - GetDirection().Angle();
 }
 
 float GC_Weapon::GetRealAngle() const
@@ -404,11 +406,28 @@ float GC_Weapon::GetRealAngle() const
 
 void GC_Weapon::SetAngle(float _angle)
 {
-	float angle = abs(-_angle);
-	_rotatorWeap.stop();
-	_rotatorWeap.rotate_to(angle);
-	SetDirection(vec2d(angle));
-	_angleNormal = angle;
+	float angle = PI2 - _angle;
+	if (GetCarrier())
+	{
+		float vehAngle = PI2 - reinterpret_cast<GC_Vehicle *>(GetCarrier())->GetAngle();
+		float deltaAngle;
+		if (vehAngle > angle)
+			deltaAngle = PI2 - vehAngle + angle;
+		else
+			deltaAngle = angle - vehAngle;
+		
+		_rotatorWeap.stop();
+		_rotatorWeap.rotate_to(deltaAngle);
+		_angleNormal = deltaAngle;
+		
+	}
+	else
+	{
+		_rotatorWeap.stop();
+		_rotatorWeap.rotate_to(angle);
+		SetDirection(vec2d(angle));
+		_angleNormal = angle;
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
