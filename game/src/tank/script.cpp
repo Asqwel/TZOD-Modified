@@ -1263,7 +1263,7 @@ int luaT_findobj(lua_State *L)
 	FOREACH( g_level->GetList(LIST_objects), GC_RigidBodyStatic, obj )
 	{
 		if( obj->IsKilled() ) continue;
-		if( type == Level::GetTypeName(obj->GetType()))
+		if( !strcmp( type, Level::GetTypeName(obj->GetType()) ) )
 		{
 			float rr = (vec2d(x, y) - obj->GetPos()).sqr();
 			if( rr < rr_min )
