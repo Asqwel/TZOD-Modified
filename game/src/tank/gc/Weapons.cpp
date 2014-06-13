@@ -36,7 +36,7 @@ GC_Weapon::MyPropertySet::MyPropertySet(GC_Object *object)
   , _propDir(	  ObjectProperty::TYPE_FLOAT, 	"dir"	   )
 {
 	_propTimeStay.SetIntRange(0, 1000000);
-	_propDir.SetFloatRange(0, (2.0f)*PI);
+	_propDir.SetFloatRange(0, PI2);
 }
 
 int GC_Weapon::MyPropertySet::GetCount() const
@@ -415,15 +415,13 @@ void GC_Weapon::SetAngle(float _angle)
 			deltaAngle = PI2 - vehAngle + angle;
 		else
 			deltaAngle = angle - vehAngle;
-		
-		_rotatorWeap.stop();
+
 		_rotatorWeap.rotate_to(deltaAngle);
 		_angleNormal = deltaAngle;
 		
 	}
 	else
 	{
-		_rotatorWeap.stop();
 		_rotatorWeap.rotate_to(angle);
 		SetDirection(vec2d(angle));
 		_angleNormal = angle;
