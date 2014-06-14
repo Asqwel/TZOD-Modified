@@ -1276,6 +1276,19 @@ int luaT_findobj(lua_State *L)
 	return 0;
 }
 
+int luaT_getbooster(lua_State *L)
+{
+	int n = lua_gettop(L);
+	if ( 1 != n )
+	{
+		return luaL_error(L, "1 argument expected; got %d", n);
+	}
+	
+	GC_Weapon *name = luaT_checkobjectT<GC_Weapon>(L, 1);
+	lua_pushboolean(L, name->GetAdvanced());
+	return 1;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // api
 
@@ -1380,6 +1393,8 @@ lua_State* script_open(void)
 	lua_register(L, "findobj",  luaT_findobj);
 	lua_register(L, "getpowervalue", luaT_getpowervalue);
 	lua_register(L, "getpowerdir", luaT_getpowerdir);
+	
+	lua_register(L, "getbooster", luaT_getbooster);
 
 	//
 	// init the command queue
