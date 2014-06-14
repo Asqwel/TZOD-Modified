@@ -437,7 +437,7 @@ void GC_Weapon::SetAngle(float _angle)
 {
 	if (GetCarrier())
 	{
-		float vehAngle = PI2 - reinterpret_cast<GC_Vehicle *>(GetCarrier())->GetAngle();
+		float vehAngle = reinterpret_cast<GC_Vehicle *>(GetCarrier())->GetAngle();
 		float deltaAngle;
 		if (vehAngle > _angle)
 			deltaAngle = PI2 - vehAngle + _angle;
@@ -445,6 +445,7 @@ void GC_Weapon::SetAngle(float _angle)
 			deltaAngle = _angle - vehAngle;
 
 		_rotatorWeap.rotate_to(deltaAngle);
+		SetDirection(vec2d(deltaAngle));
 		_angleNormal = deltaAngle;		
 	}
 	else
@@ -2047,7 +2048,7 @@ void GC_Weap_ScriptGun::Fire()
 				GC_Vehicle * const veh = static_cast<GC_Vehicle*>(GetCarrier());
 				const vec2d &dir = GetDirectionReal();
 				veh->ApplyImpulse( dir * (-_recoil) );
-				veh->ApplyTorque(_pullPower * (g_level->net_frand(1.0f)));
+				veh->ApplyTorque(_pullPower * (g_level->net_frand(2.0f) - 1.0f));
 				
 				GC_Weapon::OnFire();
 				
@@ -2061,7 +2062,7 @@ void GC_Weap_ScriptGun::Fire()
 				GC_Vehicle * const veh = static_cast<GC_Vehicle*>(GetCarrier());
 				const vec2d &dir = GetDirectionReal();
 				veh->ApplyImpulse( dir * (-_recoil) );
-				veh->ApplyTorque(_pullPower * (g_level->net_frand(1.0f)));
+				veh->ApplyTorque(_pullPower * (g_level->net_frand(2.0f) - 1.0f));
 				
 				GC_Weapon::OnFire();
 
