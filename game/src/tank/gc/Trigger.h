@@ -31,6 +31,7 @@ class GC_Trigger : public GC_2dSprite
 		ObjectProperty _propOnEnter;
 		ObjectProperty _propOnLeave;
 		ObjectProperty _propOnShot;
+		ObjectProperty _propOnlyService;
 
 	public:
 		MyPropertySet(GC_Object *object);
@@ -44,6 +45,7 @@ class GC_Trigger : public GC_2dSprite
 	float    _radius;
 	float    _radiusDelta;
 	int      _team;
+	int		 _onlyService;
 	string_t _onEnter;
 	string_t _onLeave;
 	string_t _onShot;

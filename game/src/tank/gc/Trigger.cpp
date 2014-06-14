@@ -25,6 +25,7 @@ GC_Trigger::GC_Trigger(float x, float y)
   , _team(0)
   , _radius(1)
   , _radiusDelta(0)
+  , _onlyService(0)
 {
 	SetTexture("editor_trigger");
 	MoveTo(vec2d(x, y));
@@ -61,6 +62,7 @@ void GC_Trigger::Serialize(SaveFile &f)
 	f.Serialize(_veh);
 	f.Serialize(_proj);
 	f.Serialize(_team);
+	f.Serialize(_onlyService);
 }
 
 void GC_Trigger::MapExchange(MapFile &f)
@@ -75,6 +77,7 @@ void GC_Trigger::MapExchange(MapFile &f)
 	MAP_EXCHANGE_INT(only_visible, onlyVisible, 0);
 	MAP_EXCHANGE_INT(only_human, onlyHuman, 0);
 	MAP_EXCHANGE_INT(team, _team, 0);
+	MAP_EXCHANGE_INT(only_service, _onlyService, 0);
 	MAP_EXCHANGE_FLOAT(radius, _radius, 1);
 	MAP_EXCHANGE_FLOAT(radius_delta, _radiusDelta, 0);
 	MAP_EXCHANGE_STRING(on_enter, _onEnter, "");
@@ -99,15 +102,35 @@ void GC_Trigger::TimeStepFixed(float dt)
 		{
 			if( !veh->IsKilled() )
 			{
-				if( !veh->GetOwner() 
-					|| CheckFlags(GC_FLAG_TRIGGER_ONLYHUMAN) 
-						&& dynamic_cast<GC_PlayerAI*>(veh->GetOwner()) )
+				if (_onlyService)
 				{
-					continue;
+					if( !veh->GetOwner() 
+						|| CheckFlags(GC_FLAG_TRIGGER_ONLYHUMAN) 
+							&& dynamic_cast<GC_PlayerAI*>(veh->GetOwner()) )
+					{
+						continue;
+					}
+					if( _team && veh->GetOwner()->GetTeam() != _team )
+					{
+						continue;
+					}
 				}
-				if( _team && veh->GetOwner()->GetTeam() != _team )
+				else
 				{
-					continue;
+					if( !veh->GetOwner() )
+					{
+						if( CheckFlags(GC_FLAG_TRIGGER_ONLYHUMAN) )
+						{
+							continue;
+						}
+					}
+					else
+					{
+						if( CheckFlags(GC_FLAG_TRIGGER_ONLYHUMAN) && dynamic_cast<GC_PlayerAI*>(veh->GetOwner()) )
+						{
+							continue;
+						}
+					}
 				}
 				float rr = (GetPos() - veh->GetPos()).sqr();
 				if( rr < rr_min )
@@ -318,6 +341,7 @@ GC_Trigger::MyPropertySet::MyPropertySet(GC_Object *object)
   , _propRadiusDelta(ObjectProperty::TYPE_FLOAT, "radius_delta")
   , _propOnlyHuman(ObjectProperty::TYPE_INTEGER, "only_human")
   , _propOnlyVisible(ObjectProperty::TYPE_INTEGER, "only_visible")
+  , _propOnlyService(ObjectProperty::TYPE_INTEGER, "only_service")
   , _propOnEnter(ObjectProperty::TYPE_STRING, "on_enter")
   , _propOnLeave(ObjectProperty::TYPE_STRING, "on_leave")
   , _propOnShot(ObjectProperty::TYPE_STRING, "on_shot")
@@ -325,6 +349,7 @@ GC_Trigger::MyPropertySet::MyPropertySet(GC_Object *object)
 	_propActive.SetIntRange(0, 1);
 	_propOnlyHuman.SetIntRange(0, 1);
 	_propOnlyVisible.SetIntRange(0, 1);
+	_propOnlyService.SetIntRange(0, 1);
 	_propTeam.SetIntRange(0, MAX_TEAMS);
 	_propRadius.SetFloatRange(0, 100);
 	_propRadiusDelta.SetFloatRange(0, 100);
@@ -332,7 +357,7 @@ GC_Trigger::MyPropertySet::MyPropertySet(GC_Object *object)
 
 int GC_Trigger::MyPropertySet::GetCount() const
 {
-	return BASE::GetCount() + 9;
+	return BASE::GetCount() + 10;
 }
 
 ObjectProperty* GC_Trigger::MyPropertySet::GetProperty(int index)
@@ -345,12 +370,13 @@ ObjectProperty* GC_Trigger::MyPropertySet::GetProperty(int index)
 		case 0: return &_propActive;
 		case 1: return &_propOnlyHuman;
 		case 2: return &_propOnlyVisible;
-		case 3: return &_propTeam;
-		case 4: return &_propRadius;
-		case 5: return &_propRadiusDelta;
-		case 6: return &_propOnEnter;
-		case 7: return &_propOnLeave;
-		case 8: return &_propOnShot;
+		case 3: return &_propOnlyService;
+		case 4: return &_propTeam;
+		case 5: return &_propRadius;
+		case 6: return &_propRadiusDelta;
+		case 7: return &_propOnEnter;
+		case 8: return &_propOnLeave;
+		case 9: return &_propOnShot;
 	}
 
 	assert(false);
@@ -368,6 +394,7 @@ void GC_Trigger::MyPropertySet::MyExchange(bool applyToObject)
 		tmp->SetFlags(GC_FLAG_TRIGGER_ONLYHUMAN, 0!=_propOnlyHuman.GetIntValue());
 		tmp->SetFlags(GC_FLAG_TRIGGER_ONLYVISIBLE, 0!=_propOnlyVisible.GetIntValue());
 		tmp->SetFlags(GC_FLAG_TRIGGER_ACTIVE, 0!=_propActive.GetIntValue());
+		tmp->_onlyService = _propOnlyService.GetIntValue();
 		tmp->_team = _propTeam.GetIntValue();
 		tmp->_radius = _propRadius.GetFloatValue();
 		tmp->_radiusDelta = _propRadiusDelta.GetFloatValue();
@@ -380,6 +407,7 @@ void GC_Trigger::MyPropertySet::MyExchange(bool applyToObject)
 		_propOnlyHuman.SetIntValue(tmp->CheckFlags(GC_FLAG_TRIGGER_ONLYHUMAN) ? 1 : 0);
 		_propOnlyVisible.SetIntValue(tmp->CheckFlags(GC_FLAG_TRIGGER_ONLYVISIBLE) ? 1 : 0);
 		_propActive.SetIntValue(tmp->CheckFlags(GC_FLAG_TRIGGER_ACTIVE) ? 1 : 0);
+		_propOnlyService.SetIntValue(tmp->_onlyService);
 		_propTeam.SetIntValue(tmp->_team);
 		_propRadius.SetFloatValue(tmp->_radius);
 		_propRadiusDelta.SetFloatValue(tmp->_radiusDelta);
