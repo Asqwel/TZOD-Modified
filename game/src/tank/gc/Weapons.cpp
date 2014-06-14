@@ -394,6 +394,40 @@ void GC_Weapon::OnFire(GC_Projectile *proj)
 	}
 }
 
+void GC_Weapon::OnFire(void)
+{
+	if( !_scriptOnFire.empty() )
+	{
+		std::stringstream buf;
+		buf << "return function(self)";
+		buf << _scriptOnFire;
+		buf << "\nend";
+
+		if( luaL_loadstring(g_env.L, buf.str().c_str()) )
+		{
+			GetConsole().Printf(1, "OnFire: %s", lua_tostring(g_env.L, -1));
+			lua_pop(g_env.L, 1); // pop the error message from the stack
+		}
+		else
+		{
+			if( lua_pcall(g_env.L, 0, 1, 0) )
+			{
+				GetConsole().WriteLine(1, lua_tostring(g_env.L, -1));
+				lua_pop(g_env.L, 1); // pop the error message from the stack
+			}
+			else
+			{
+				luaT_pushobject(g_env.L, this);
+				if( lua_pcall(g_env.L, 1, 0, 0) )
+				{
+					GetConsole().WriteLine(1, lua_tostring(g_env.L, -1));
+					lua_pop(g_env.L, 1); // pop the error message from the stack
+				}
+			}
+		}
+	}
+}
+
 float GC_Weapon::GetAngle() const
 {
 	return PI2 - GetDirection().Angle();
@@ -1798,6 +1832,241 @@ void GC_Weap_Zippo::TimeStepFixed(float dt)
 	}
 
 	GC_Weapon::TimeStepFixed(dt);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+IMPLEMENT_SELF_REGISTRATION(GC_Weap_ScriptGun)
+{
+	ED_ITEM( "weap_scripted_gun", "obj_weap_scripted_gun", 4 );
+	return true;
+}
+
+PropertySet* GC_Weap_ScriptGun::NewPropertySet()
+{
+	return new MyPropertySet(this);
+}
+
+GC_Weap_ScriptGun::MyPropertySet::MyPropertySet(GC_Object *object)
+  : BASE(object)
+  , _propTexture(		ObjectProperty::TYPE_STRING,  "texture" 		)
+  , _propAmmo(			ObjectProperty::TYPE_INTEGER, "ammo"			)
+  , _propOnLackOfAmmo(  ObjectProperty::TYPE_STRING,  "on_lack_of_ammo" )
+  , _propRecoil(		ObjectProperty::TYPE_FLOAT,   "recoil"	  		)
+  , _propRate(	  		ObjectProperty::TYPE_FLOAT,   "rate"	   		)
+  , _propReload(		ObjectProperty::TYPE_FLOAT,   "reload"	   		)
+  , _propPull(	  		ObjectProperty::TYPE_INTEGER, "pull"	   		)
+{
+	_propAmmo.SetIntRange(0, 1000000);
+	_propRecoil.SetFloatRange(0, 1000000.0f);
+	_propRate.SetFloatRange(0, 1000000.0f);
+	_propReload.SetFloatRange(0, 1000000.0f);
+	_propPull.SetIntRange(0, 1);
+}
+
+int GC_Weap_ScriptGun::MyPropertySet::GetCount() const
+{
+	return BASE::GetCount() + 7;
+}
+
+ObjectProperty* GC_Weap_ScriptGun::MyPropertySet::GetProperty(int index)
+{
+	if( index < BASE::GetCount() )
+		return BASE::GetProperty(index);
+
+	switch( index - BASE::GetCount() )
+	{
+	case 0: return &_propTexture;
+	case 1: return &_propAmmo;
+	case 2: return &_propOnLackOfAmmo;
+	case 3: return &_propRecoil;
+	case 4: return &_propRate;
+	case 5: return &_propReload;
+	case 6: return &_propPull;
+	}
+
+	assert(false);
+	return NULL;
+}
+
+void GC_Weap_ScriptGun::MapExchange(MapFile &f)
+{
+	GC_Weapon::MapExchange(f);
+
+	MAP_EXCHANGE_STRING(texture, _texture, "weap_cannon");
+	MAP_EXCHANGE_INT(ammo, _ammo, 0);
+	MAP_EXCHANGE_STRING(on_lack_of_ammo, _scriptOnLackOfAmmo, "");
+	MAP_EXCHANGE_FLOAT(recoil, _recoil, 0);
+	MAP_EXCHANGE_FLOAT(rate, _rate, 0);
+	MAP_EXCHANGE_FLOAT(reload, _reload, 0);
+	MAP_EXCHANGE_INT(pull, _pull, 0);
+	
+	if( f.loading() )
+	{
+		SetTexture(_texture.c_str());
+	}
+}
+
+void GC_Weap_ScriptGun::MyPropertySet::MyExchange(bool applyToObject)
+{
+	BASE::MyExchange(applyToObject);
+
+	GC_Weap_ScriptGun *obj = static_cast<GC_Weap_ScriptGun*>(GetObject());
+	if( applyToObject )
+	{
+		obj->_texture = _propTexture.GetStringValue();
+		obj->SetTexture(obj->_texture.c_str());
+		obj->_ammo = _propAmmo.GetIntValue();
+		obj->_scriptOnLackOfAmmo = _propOnLackOfAmmo.GetStringValue();
+		obj->_recoil = _propRecoil.GetFloatValue();
+		obj->_rate = _propRate.GetFloatValue();
+		obj->_shotPeriod = (1.0f) / obj->_rate;
+		obj->_reload = _propReload.GetFloatValue();
+		obj->_pull = _propPull.GetIntValue();
+	}
+	else
+	{
+		_propTexture.SetStringValue(obj->_texture);
+		_propAmmo.SetIntValue(obj->_ammo);
+		_propOnLackOfAmmo.SetStringValue(obj->_scriptOnLackOfAmmo);
+		_propRecoil.SetFloatValue(obj->_recoil);
+		_propRate.SetFloatValue(obj->_rate);
+		_propReload.SetFloatValue(obj->_reload);
+		_propPull.SetIntValue(obj->_pull);
+	}
+}
+
+GC_Weap_ScriptGun::GC_Weap_ScriptGun(float x, float y)
+  : GC_Weapon(x, y)
+  , _texture("weap_cannon")
+  , _ammo(0)
+  , _ammo_fired(0)
+  , _recoil(0)
+  , _rate(2.0f)
+  , _shotPeriod(0.5f)
+  , _reload(2.0f)
+  , _pull(0)
+{
+	_fePos.Set(21, 0);
+	_feTime = 0.2f;
+	SetTexture(_texture.c_str());
+}
+
+void GC_Weap_ScriptGun::SetAdvanced(bool advanced)
+{
+	GC_Weapon::SetAdvanced(advanced);
+}
+
+void GC_Weap_ScriptGun::Attach(GC_Actor *actor)
+{
+	GC_Weapon::Attach(actor);
+	
+	_timeReload = _reload;
+}
+
+void GC_Weap_ScriptGun::Detach()
+{
+	GC_Weapon::Detach();
+}
+
+GC_Weap_ScriptGun::GC_Weap_ScriptGun(FromFile)
+  : GC_Weapon(FromFile())
+{
+}
+
+GC_Weap_ScriptGun::~GC_Weap_ScriptGun()
+{
+}
+
+// TODO: Add variables
+void GC_Weap_ScriptGun::Serialize(SaveFile &f)
+{
+	GC_Weapon::Serialize(f);
+	
+	f.Serialize(_texture);
+	f.Serialize(_ammo_fired);
+	f.Serialize(_ammo);
+	f.Serialize(_recoil);
+	f.Serialize(_rate);
+	f.Serialize(_shotPeriod);
+	f.Serialize(_reload);
+	f.Serialize(_pull);
+	f.Serialize(_firing);
+	f.Serialize(_scriptOnLackOfAmmo);
+}
+
+//TODO: Add Pull
+void GC_Weap_ScriptGun::Fire()
+{
+	if ( GetCarrier() )
+	{
+		if ( _ammo )
+		{
+			if( _firing && _time >= _shotPeriod )
+			{
+				_ammo_fired++;
+
+				if( _ammo == _ammo_fired )
+				{
+					_firing = false;
+				}
+				
+				GC_Vehicle * const veh = static_cast<GC_Vehicle*>(GetCarrier());
+				const vec2d &dir = GetDirectionReal();
+				veh->ApplyImpulse( dir * (-_recoil) );
+				
+				GC_Weapon::OnFire();
+				
+				_time = 0;
+			}
+		}
+		else
+		{
+			if( _time >= _timeReload )
+			{
+				GC_Vehicle * const veh = static_cast<GC_Vehicle*>(GetCarrier());
+				const vec2d &dir = GetDirectionReal();
+				veh->ApplyImpulse( dir * (-_recoil) );
+				
+				GC_Weapon::OnFire();
+
+				_time = 0;
+			}
+		}
+	}	
+}
+
+// TODO: Change this settings
+void GC_Weap_ScriptGun::SetupAI(AIWEAPSETTINGS *pSettings)
+{
+	pSettings->bNeedOutstrip      = TRUE;
+	pSettings->fMaxAttackAngleCos = cos(0.1f);
+	pSettings->fProjectileSpeed   = SPEED_TANKBULLET;
+	pSettings->fAttackRadius_max  = 500;
+	pSettings->fAttackRadius_min  = 100;
+	pSettings->fAttackRadius_crit = _advanced ? 64.0f : 0;
+	pSettings->fDistanceMultipler = _advanced ? 2.0f : 8.0f;
+}
+
+//TODO: Add Code
+void GC_Weap_ScriptGun::TimeStepFixed(float dt)
+{
+	GC_Weapon::TimeStepFixed( dt );
+	
+	if( _ammo )
+	{
+		if( _time >= _timeReload && !_firing )
+		{
+			_firing = true;
+			_ammo_fired = 0;
+			_time = 0;
+		}
+	}
+}
+
+void GC_Weap_ScriptGun::Kill()
+{
+	GC_Weapon::Kill();
 }
 
 ///////////////////////////////////////////////////////////////////////////////

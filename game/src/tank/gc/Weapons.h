@@ -93,7 +93,9 @@ public:
 	virtual void SetCrosshair();
 
 	virtual void Fire() = 0;
+	
 	virtual void OnFire(GC_Projectile *proj);
+	virtual void OnFire(void);
 
 	virtual void TimeStepFixed(float dt);
 	virtual void TimeStepFloat(float dt);
@@ -364,6 +366,67 @@ public:
 	GC_Weap_Zippo(float x, float y);
 	GC_Weap_Zippo(FromFile);
 	virtual ~GC_Weap_Zippo();
+	virtual void Kill();
+
+	virtual void Serialize(SaveFile &f);
+	virtual void Fire();
+	virtual void SetupAI(AIWEAPSETTINGS *pSettings);
+	virtual void TimeStepFixed(float dt);
+};
+
+///////////////////////////////////////////////////////////////////////////////
+
+class GC_Weap_ScriptGun : public GC_Weapon
+{
+
+	DECLARE_SELF_REGISTRATION(GC_Weap_ScriptGun);
+
+	string_t _scriptOnLackOfAmmo;   // on_lack_of_ammo()
+	
+protected:
+	class MyPropertySet : public GC_Weapon::MyPropertySet
+	{
+		typedef GC_Weapon::MyPropertySet BASE;
+		ObjectProperty _propTexture;
+		ObjectProperty _propAmmo;
+		ObjectProperty _propOnLackOfAmmo;
+		ObjectProperty _propRecoil;
+		ObjectProperty _propRate;
+		ObjectProperty _propReload;
+		ObjectProperty _propPull;
+
+	public:
+		MyPropertySet(GC_Object *object);
+		virtual int GetCount() const;
+		virtual ObjectProperty* GetProperty(int index);
+		virtual void MyExchange(bool applyToObject);
+	};
+	virtual PropertySet* NewPropertySet();
+
+protected:
+	virtual void MapExchange(MapFile &f);
+	
+public:
+	virtual void SetAdvanced(bool advanced);
+
+public:
+	string_t _texture;
+	int _ammo_fired;
+	int _ammo;
+	float _recoil;
+	float _rate;
+	float _shotPeriod;
+	float _reload;
+	int _pull;
+	bool _firing;
+	
+
+	virtual void Attach(GC_Actor *actor);
+	virtual void Detach();
+
+	GC_Weap_ScriptGun(float x, float y);
+	GC_Weap_ScriptGun(FromFile);
+	virtual ~GC_Weap_ScriptGun();
 	virtual void Kill();
 
 	virtual void Serialize(SaveFile &f);
