@@ -22,6 +22,8 @@ struct DamageDesc
 
 class GC_RigidBodyStatic : public GC_2dSprite
 {
+	MemberOfGlobalList<LIST_RigidBodies> _memberOf;
+
 	string_t _scriptOnDestroy;  // on_destroy()
 	string_t _scriptOnDamage;   // on_damage()
 

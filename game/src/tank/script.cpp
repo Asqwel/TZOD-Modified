@@ -1260,7 +1260,7 @@ int luaT_findobj(lua_State *L)
 	float y = (float) luaL_checknumber(L, 3);
 	
 	float rr_min = CELL_SIZE * CELL_SIZE;
-	FOREACH( g_level->GetList(LIST_objects), GC_RigidBodyStatic, obj )
+	FOREACH( g_level->GetList(LIST_RigidBodies), GC_RigidBodyStatic, obj )
 	{
 		if( obj->IsKilled() ) continue;
 		if( !strcmp( type, Level::GetTypeName(obj->GetType()) ) )

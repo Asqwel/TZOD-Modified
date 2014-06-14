@@ -206,6 +206,7 @@ enum GlobalListID
 	LIST_pickups,
 	LIST_lights,
 	LIST_cameras,
+	LIST_RigidBodies,
 	//------------------
 	GLOBAL_LIST_COUNT
 };

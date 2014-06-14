@@ -21,6 +21,7 @@
 
 GC_RigidBodyStatic::GC_RigidBodyStatic()
   : GC_2dSprite()
+  , _memberOf(this)
   , _health(1)
   , _health_max(1)
   , _radius(0)
@@ -33,6 +34,7 @@ GC_RigidBodyStatic::GC_RigidBodyStatic()
 
 GC_RigidBodyStatic::GC_RigidBodyStatic(FromFile)
   : GC_2dSprite(FromFile())
+  , _memberOf(this)
   , _radius(0) // for proper handling of bad save files
 {
 }
