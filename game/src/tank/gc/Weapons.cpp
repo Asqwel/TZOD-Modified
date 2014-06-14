@@ -1967,8 +1967,6 @@ void GC_Weap_ScriptGun::Attach(GC_Actor *actor)
 			(float *) &_ammo_fired, (float *) &_ammo, LOCATION_BOTTOM);
 		pIndicator->SetInverse(true);
 	}
-	
-	_timeReload = _reload;
 }
 
 void GC_Weap_ScriptGun::Detach()
@@ -2095,7 +2093,7 @@ void GC_Weap_ScriptGun::TimeStepFixed(float dt)
 	
 	if( _ammo )
 	{
-		if( _time >= _timeReload && !_firing )
+		if( _time >= _reload && !_firing )
 		{
 			_firing = true;
 			_ammo_fired = 0;
