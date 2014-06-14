@@ -1848,13 +1848,13 @@ GC_Weap_ScriptGun::MyPropertySet::MyPropertySet(GC_Object *object)
   , _propRecoil(		ObjectProperty::TYPE_FLOAT,   "recoil"	  		)
   , _propRate(	  		ObjectProperty::TYPE_FLOAT,   "rate"	   		)
   , _propReload(		ObjectProperty::TYPE_FLOAT,   "reload"	   		)
-  , _propPull(	  		ObjectProperty::TYPE_INTEGER, "pull"	   		)
+  , _propPullPower(	  	ObjectProperty::TYPE_FLOAT,   "pull_power"	   	)
 {
 	_propAmmo.SetIntRange(0, 1000000);
 	_propRecoil.SetFloatRange(0, 1000000.0f);
 	_propRate.SetFloatRange(0, 1000000.0f);
 	_propReload.SetFloatRange(0, 1000000.0f);
-	_propPull.SetIntRange(0, 1);
+	_propPullPower.SetFloatRange(0, 1000000.0f);
 }
 
 int GC_Weap_ScriptGun::MyPropertySet::GetCount() const
@@ -1875,7 +1875,7 @@ ObjectProperty* GC_Weap_ScriptGun::MyPropertySet::GetProperty(int index)
 	case 3: return &_propRecoil;
 	case 4: return &_propRate;
 	case 5: return &_propReload;
-	case 6: return &_propPull;
+	case 6: return &_propPullPower;
 	}
 
 	assert(false);
@@ -1892,7 +1892,7 @@ void GC_Weap_ScriptGun::MapExchange(MapFile &f)
 	MAP_EXCHANGE_FLOAT(recoil, _recoil, 0);
 	MAP_EXCHANGE_FLOAT(rate, _rate, 0);
 	MAP_EXCHANGE_FLOAT(reload, _reload, 0);
-	MAP_EXCHANGE_INT(pull, _pull, 0);
+	MAP_EXCHANGE_FLOAT(pull_power, _pullPower, 0);
 	
 	if( f.loading() )
 	{
@@ -1915,7 +1915,7 @@ void GC_Weap_ScriptGun::MyPropertySet::MyExchange(bool applyToObject)
 		obj->_rate = _propRate.GetFloatValue();
 		obj->_shotPeriod = (float) (1.0f) / obj->_rate;
 		obj->_reload = _propReload.GetFloatValue();
-		obj->_pull = _propPull.GetIntValue();
+		obj->_pullPower = _propPullPower.GetFloatValue();
 	}
 	else
 	{
@@ -1925,7 +1925,7 @@ void GC_Weap_ScriptGun::MyPropertySet::MyExchange(bool applyToObject)
 		_propRecoil.SetFloatValue(obj->_recoil);
 		_propRate.SetFloatValue(obj->_rate);
 		_propReload.SetFloatValue(obj->_reload);
-		_propPull.SetIntValue(obj->_pull);
+		_propPullPower.SetFloatValue(obj->_pullPower);
 	}
 }
 
@@ -1938,7 +1938,7 @@ GC_Weap_ScriptGun::GC_Weap_ScriptGun(float x, float y)
   , _rate(2.0f)
   , _shotPeriod(0.5f)
   , _reload(2.0f)
-  , _pull(0)
+  , _pullPower(0)
 {
 	_fePos.Set(21, 0);
 	_feTime = 0.2f;
@@ -1954,8 +1954,11 @@ void GC_Weap_ScriptGun::Attach(GC_Actor *actor)
 {
 	GC_Weapon::Attach(actor);
 	
+	_time = _reload;
+	
 	if ( _ammo )
 	{
+		_firing = false;
 		GC_IndicatorBar *pIndicator = new GC_IndicatorBar("indicator_ammo", this,
 			(float *) &_ammo_fired, (float *) &_ammo, LOCATION_BOTTOM);
 		pIndicator->SetInverse(true);
@@ -1991,12 +1994,11 @@ void GC_Weap_ScriptGun::Serialize(SaveFile &f)
 	f.Serialize(_rate);
 	f.Serialize(_shotPeriod);
 	f.Serialize(_reload);
-	f.Serialize(_pull);
+	f.Serialize(_pullPower);
 	f.Serialize(_firing);
 	f.Serialize(_scriptOnLackOfAmmo);
 }
 
-//TODO: Add Pull
 void GC_Weap_ScriptGun::Fire()
 {
 	if ( GetCarrier() )
@@ -2045,6 +2047,7 @@ void GC_Weap_ScriptGun::Fire()
 				GC_Vehicle * const veh = static_cast<GC_Vehicle*>(GetCarrier());
 				const vec2d &dir = GetDirectionReal();
 				veh->ApplyImpulse( dir * (-_recoil) );
+				veh->ApplyTorque(_pullPower * (g_level->net_frand(1.0f)));
 				
 				GC_Weapon::OnFire();
 				
@@ -2058,6 +2061,7 @@ void GC_Weap_ScriptGun::Fire()
 				GC_Vehicle * const veh = static_cast<GC_Vehicle*>(GetCarrier());
 				const vec2d &dir = GetDirectionReal();
 				veh->ApplyImpulse( dir * (-_recoil) );
+				veh->ApplyTorque(_pullPower * (g_level->net_frand(1.0f)));
 				
 				GC_Weapon::OnFire();
 

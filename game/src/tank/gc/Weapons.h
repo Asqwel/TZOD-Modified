@@ -392,7 +392,7 @@ protected:
 		ObjectProperty _propRecoil;
 		ObjectProperty _propRate;
 		ObjectProperty _propReload;
-		ObjectProperty _propPull;
+		ObjectProperty _propPullPower;
 
 	public:
 		MyPropertySet(GC_Object *object);
@@ -416,7 +416,7 @@ public:
 	float _rate;
 	float _shotPeriod;
 	float _reload;
-	int _pull;
+	float _pullPower;
 	bool _firing;
 	
 
