@@ -1920,7 +1920,7 @@ void GC_Weap_ScriptGun::MyPropertySet::MyExchange(bool applyToObject)
 		obj->_scriptOnLackOfAmmo = _propOnLackOfAmmo.GetStringValue();
 		obj->_recoil = _propRecoil.GetFloatValue();
 		obj->_rate = _propRate.GetFloatValue();
-		obj->_shotPeriod = (1.0f) / obj->_rate;
+		obj->_shotPeriod = (float) (1.0f) / obj->_rate;
 		obj->_reload = _propReload.GetFloatValue();
 		obj->_pull = _propPull.GetIntValue();
 	}
@@ -1961,12 +1961,22 @@ void GC_Weap_ScriptGun::Attach(GC_Actor *actor)
 {
 	GC_Weapon::Attach(actor);
 	
+	if ( _ammo )
+	{
+		GC_IndicatorBar *pIndicator = new GC_IndicatorBar("indicator_ammo", this,
+			(float *) &_ammo_fired, (float *) &_ammo, LOCATION_BOTTOM);
+		pIndicator->SetInverse(true);
+	}
+	
 	_timeReload = _reload;
 }
 
 void GC_Weap_ScriptGun::Detach()
 {
 	GC_Weapon::Detach();
+	
+	GC_IndicatorBar *indicator = GC_IndicatorBar::FindIndicator(this, LOCATION_BOTTOM);
+	if( indicator ) indicator->Kill();
 }
 
 GC_Weap_ScriptGun::GC_Weap_ScriptGun(FromFile)
@@ -2009,6 +2019,36 @@ void GC_Weap_ScriptGun::Fire()
 				if( _ammo == _ammo_fired )
 				{
 					_firing = false;
+					if( !_scriptOnLackOfAmmo.empty() )
+					{
+						std::stringstream buf;
+						buf << "return function(self)";
+						buf << _scriptOnLackOfAmmo;
+						buf << "\nend";
+
+						if( luaL_loadstring(g_env.L, buf.str().c_str()) )
+						{
+							GetConsole().Printf(1, "OnLackOfAmmo: %s", lua_tostring(g_env.L, -1));
+							lua_pop(g_env.L, 1); // pop the error message from the stack
+						}
+						else
+						{
+							if( lua_pcall(g_env.L, 0, 1, 0) )
+							{
+								GetConsole().WriteLine(1, lua_tostring(g_env.L, -1));
+								lua_pop(g_env.L, 1); // pop the error message from the stack
+							}
+							else
+							{
+								luaT_pushobject(g_env.L, this);
+								if( lua_pcall(g_env.L, 1, 0, 0) )
+								{
+									GetConsole().WriteLine(1, lua_tostring(g_env.L, -1));
+									lua_pop(g_env.L, 1); // pop the error message from the stack
+								}
+							}
+						}
+					}
 				}
 				
 				GC_Vehicle * const veh = static_cast<GC_Vehicle*>(GetCarrier());
@@ -2022,7 +2062,7 @@ void GC_Weap_ScriptGun::Fire()
 		}
 		else
 		{
-			if( _time >= _timeReload )
+			if( _time >= _shotPeriod )
 			{
 				GC_Vehicle * const veh = static_cast<GC_Vehicle*>(GetCarrier());
 				const vec2d &dir = GetDirectionReal();
