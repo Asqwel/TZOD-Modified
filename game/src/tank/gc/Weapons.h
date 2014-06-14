@@ -101,7 +101,6 @@ public:
 	virtual void TimeStepFloat(float dt);
 	
 	virtual float GetAngle() const;
-	virtual float GetRealAngle() const;
 	virtual void SetAngle(float _angle);
 
 private:

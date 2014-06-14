@@ -965,19 +965,13 @@ void GC_Vehicle::MyPropertySet::MyExchange(bool applyToObject)
 
 float GC_Vehicle::GetAngle() const
 {
-	return PI2 - GetDirection().Angle();
-}
-
-float GC_Vehicle::GetRealAngle() const
-{
 	return GetDirection().Angle();
 }
 
 void GC_Vehicle::SetAngle(float _angle)
 {
-	float angle = abs(PI2 - _angle);
-	SetDirection(vec2d(angle));
-	_angleNormal = angle;
+	SetDirection(vec2d(_angle));
+	_angleNormal = _angle;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////
 

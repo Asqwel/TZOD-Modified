@@ -126,7 +126,6 @@ public:
 	void SetPredictedState(const VehicleState &vs);
 	
 	virtual float GetAngle() const;
-	virtual float GetRealAngle() const;
 	virtual void SetAngle(float _angle);
 	
 //--------------------------------------------------------

@@ -430,35 +430,28 @@ void GC_Weapon::OnFire(void)
 
 float GC_Weapon::GetAngle() const
 {
-	return PI2 - GetDirection().Angle();
-}
-
-float GC_Weapon::GetRealAngle() const
-{
 	return GetDirection().Angle();
 }
 
 void GC_Weapon::SetAngle(float _angle)
 {
-	float angle = PI2 - _angle;
 	if (GetCarrier())
 	{
 		float vehAngle = PI2 - reinterpret_cast<GC_Vehicle *>(GetCarrier())->GetAngle();
 		float deltaAngle;
-		if (vehAngle > angle)
-			deltaAngle = PI2 - vehAngle + angle;
+		if (vehAngle > _angle)
+			deltaAngle = PI2 - vehAngle + _angle;
 		else
-			deltaAngle = angle - vehAngle;
+			deltaAngle = _angle - vehAngle;
 
 		_rotatorWeap.rotate_to(deltaAngle);
-		_angleNormal = deltaAngle;
-		
+		_angleNormal = deltaAngle;		
 	}
 	else
 	{
-		_rotatorWeap.rotate_to(angle);
-		SetDirection(vec2d(angle));
-		_angleNormal = angle;
+		_rotatorWeap.rotate_to(_angle);
+		SetDirection(vec2d(_angle));
+		_angleNormal = _angle;
 	}
 }
 
