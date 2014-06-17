@@ -43,6 +43,11 @@ REFLECTION_BEGIN_(ConfPlayerAI, ConfPlayerBase)
 	VAR_INT(level,  2)
 REFLECTION_END()
 
+REFLECTION_BEGIN(ConfHotkeys)
+VAR_STR(key,     NULL)
+VAR_STR(command, NULL)
+REFLECTION_END()
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // config map
@@ -130,6 +135,9 @@ REFLECTION_BEGIN(ConfCache) //  var_name  def_value
 	VAR_ARRAY( dm_players,                NULL )
 	VAR_ARRAY( dm_bots,                   NULL )
 	VAR_ARRAY( lobby_servers,    InitLobbyList )
+
+	// lua hotkeys binding
+	VAR_ARRAY( hotkeys, NULL )
 
 REFLECTION_END()
 

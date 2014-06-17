@@ -23,6 +23,9 @@
 #include "Level.h"
 #include "script.h"
 
+// for hotkeys
+#include "KeyMapper.h"
+
 namespace UI
 {
 ///////////////////////////////////////////////////////////////////////////////
@@ -40,6 +43,19 @@ MessageArea::~MessageArea()
 
 void MessageArea::OnTimeStep(float dt)
 {
+	// lua hotkeys
+	for (size_t i = 0; i < g_conf.hotkeys.GetSize(); ++i)
+	{
+		ConfHotkeys p(g_conf.hotkeys.GetAt(i)->AsTable());
+		int pressedKey = GetKeyCode(p.key.Get());
+		if (g_env.envInputs.IsKeyPressed(pressedKey)) 
+		{
+			script_exec(g_env.L, p.command.Get().c_str());
+			//return true;
+		}
+	}
+	//
+
 	for( size_t i = 0; i < _lines.size(); ++i )
 		_lines[i].time -= dt;
 	while( !_lines.empty() && _lines.back().time <= 0 )
