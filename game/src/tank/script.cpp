@@ -10,6 +10,7 @@
 #include "gc/pickup.h"
 #include "gc/ai.h"
 #include "gc/Weapons.h" // for ugly workaround
+#include "gc/Camera.h"
 
 #include "ui/GuiManager.h"
 #include "ui/gui_desktop.h"
@@ -1289,6 +1290,37 @@ int luaT_getbooster(lua_State *L)
 	return 1;
 }
 
+int luaT_getmouseposition(lua_State *L)
+{
+
+	luaL_checktype(L, 1, LUA_TBOOLEAN);
+
+	bool world = lua_toboolean(L, 1);
+
+	int mx;
+	int my;
+	
+	if (world)
+	{
+		vec2d pos;
+	
+		GC_Camera::GetWorldMousePos(pos);
+		
+		mx = pos.x;
+		my = pos.y;
+	}
+	else
+	{
+		mx = g_env.envInputs.mouse_x;
+		my = g_env.envInputs.mouse_y;
+	}
+	
+	lua_pushnumber(L, mx);
+	lua_pushnumber(L, my);
+	
+	return 2;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // api
 
@@ -1395,6 +1427,7 @@ lua_State* script_open(void)
 	lua_register(L, "getpowerdir", luaT_getpowerdir);
 	
 	lua_register(L, "getbooster", luaT_getbooster);
+	lua_register(L, "getmouseposition", luaT_getmouseposition);
 
 	//
 	// init the command queue
