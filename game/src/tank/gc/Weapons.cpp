@@ -1858,6 +1858,8 @@ GC_Weap_ScriptGun::MyPropertySet::MyPropertySet(GC_Object *object)
 	_propRate.SetFloatRange(0, 1000000.0f);
 	_propReload.SetFloatRange(0, 1000000.0f);
 	_propPullPower.SetFloatRange(0, 1000000.0f);
+	_propCrosshairType.SetIntRange(0, 2);
+	_propReloadIndicator.SetIntRange(0, 2);
 }
 
 int GC_Weap_ScriptGun::MyPropertySet::GetCount() const
