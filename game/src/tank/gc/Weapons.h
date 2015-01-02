@@ -393,6 +393,8 @@ protected:
 		ObjectProperty _propRate;
 		ObjectProperty _propReload;
 		ObjectProperty _propPullPower;
+		ObjectProperty _propCrosshairType;
+		ObjectProperty _propReloadIndicator;
 
 	public:
 		MyPropertySet(GC_Object *object);
@@ -404,6 +406,9 @@ protected:
 
 protected:
 	virtual void MapExchange(MapFile &f);
+	
+private:
+	SafePtr<GC_2dSprite> _crosshairLeft;
 	
 public:
 	virtual void SetAdvanced(bool advanced);
@@ -418,6 +423,8 @@ public:
 	float _reload;
 	float _pullPower;
 	bool _firing;
+	int _crosshairType;
+	int _reloadIndicator;
 	
 
 	virtual void Attach(GC_Actor *actor);

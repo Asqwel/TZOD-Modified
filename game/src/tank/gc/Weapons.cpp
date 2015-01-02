@@ -1843,13 +1843,15 @@ PropertySet* GC_Weap_ScriptGun::NewPropertySet()
 
 GC_Weap_ScriptGun::MyPropertySet::MyPropertySet(GC_Object *object)
   : BASE(object)
-  , _propTexture(		ObjectProperty::TYPE_STRING,  "texture" 		)
-  , _propAmmo(			ObjectProperty::TYPE_INTEGER, "ammo"			)
-  , _propOnLackOfAmmo(  ObjectProperty::TYPE_STRING,  "on_lack_of_ammo" )
-  , _propRecoil(		ObjectProperty::TYPE_FLOAT,   "recoil"	  		)
-  , _propRate(	  		ObjectProperty::TYPE_FLOAT,   "rate"	   		)
-  , _propReload(		ObjectProperty::TYPE_FLOAT,   "reload"	   		)
-  , _propPullPower(	  	ObjectProperty::TYPE_FLOAT,   "pull_power"	   	)
+  , _propTexture(			ObjectProperty::TYPE_STRING,  "texture" 		)
+  , _propAmmo(				ObjectProperty::TYPE_INTEGER, "ammo"			)
+  , _propOnLackOfAmmo(  	ObjectProperty::TYPE_STRING,  "on_lack_of_ammo" )
+  , _propRecoil(			ObjectProperty::TYPE_FLOAT,   "recoil"	  		)
+  , _propRate(	  			ObjectProperty::TYPE_FLOAT,   "rate"	   		)
+  , _propReload(			ObjectProperty::TYPE_FLOAT,   "reload"	   		)
+  , _propPullPower(	    	ObjectProperty::TYPE_FLOAT,   "pull_power"	   	)
+  , _propCrosshairType( 	ObjectProperty::TYPE_INTEGER, "crosshair_type"  )
+  , _propReloadIndicator(	ObjectProperty::TYPE_INTEGER, "reload_indicator")
 {
 	_propAmmo.SetIntRange(0, 1000000);
 	_propRecoil.SetFloatRange(0, 1000000.0f);
@@ -1860,7 +1862,7 @@ GC_Weap_ScriptGun::MyPropertySet::MyPropertySet(GC_Object *object)
 
 int GC_Weap_ScriptGun::MyPropertySet::GetCount() const
 {
-	return BASE::GetCount() + 7;
+	return BASE::GetCount() + 9;
 }
 
 ObjectProperty* GC_Weap_ScriptGun::MyPropertySet::GetProperty(int index)
@@ -1877,6 +1879,8 @@ ObjectProperty* GC_Weap_ScriptGun::MyPropertySet::GetProperty(int index)
 	case 4: return &_propRate;
 	case 5: return &_propReload;
 	case 6: return &_propPullPower;
+	case 7: return &_propCrosshairType;
+	case 8: return &_propReloadIndicator;
 	}
 
 	assert(false);
@@ -1894,6 +1898,8 @@ void GC_Weap_ScriptGun::MapExchange(MapFile &f)
 	MAP_EXCHANGE_FLOAT(rate, _rate, 0);
 	MAP_EXCHANGE_FLOAT(reload, _reload, 0);
 	MAP_EXCHANGE_FLOAT(pull_power, _pullPower, 0);
+	MAP_EXCHANGE_INT(crosshair_type, _crosshairType, 0);
+	MAP_EXCHANGE_INT(reload_indicator, _reloadIndicator, 0);
 	
 	if( f.loading() )
 	{
@@ -1917,6 +1923,8 @@ void GC_Weap_ScriptGun::MyPropertySet::MyExchange(bool applyToObject)
 		obj->_shotPeriod = (float) (1.0f) / obj->_rate;
 		obj->_reload = _propReload.GetFloatValue();
 		obj->_pullPower = _propPullPower.GetFloatValue();
+		obj->_crosshairType = _propCrosshairType.GetIntValue();
+		obj->_reloadIndicator = _propReloadIndicator.GetIntValue();
 	}
 	else
 	{
@@ -1927,6 +1935,8 @@ void GC_Weap_ScriptGun::MyPropertySet::MyExchange(bool applyToObject)
 		_propRate.SetFloatValue(obj->_rate);
 		_propReload.SetFloatValue(obj->_reload);
 		_propPullPower.SetFloatValue(obj->_pullPower);
+		_propCrosshairType.SetIntValue(obj->_crosshairType);
+		_propReloadIndicator.SetIntValue(obj->_reloadIndicator);
 	}
 }
 
@@ -1940,6 +1950,8 @@ GC_Weap_ScriptGun::GC_Weap_ScriptGun(float x, float y)
   , _shotPeriod(0.5f)
   , _reload(2.0f)
   , _pullPower(0)
+  , _crosshairType(1)
+  , _reloadIndicator(0)
 {
 	_fePos.Set(21, 0);
 	_feTime = 0.2f;
@@ -1957,12 +1969,29 @@ void GC_Weap_ScriptGun::Attach(GC_Actor *actor)
 	
 	_time = _reload;
 	
-	if ( _ammo )
+	if ( _reloadIndicator )
 	{
 		_firing = false;
 		GC_IndicatorBar *pIndicator = new GC_IndicatorBar("indicator_ammo", this,
 			(float *) &_ammo_fired, (float *) &_ammo, LOCATION_BOTTOM);
-		pIndicator->SetInverse(true);
+		if ( _reloadIndicator == 1)
+		{
+			pIndicator->SetInverse(true);
+		}
+	}
+	if ( _crosshairType == 2 )
+	{
+		_crosshair = WrapRawPtr(new GC_2dSprite());
+		_crosshair->SetTexture("indicator_crosshair2");
+		_crosshair->SetZ(Z_VEHICLE_LABEL);
+
+		_crosshairLeft = WrapRawPtr(new GC_2dSprite());
+		_crosshairLeft->SetTexture("indicator_crosshair2");
+		_crosshairLeft->SetZ(Z_VEHICLE_LABEL);
+	}
+	else if ( !_crosshairType )
+	{
+		_crosshair->SetVisible(false);
 	}
 }
 
