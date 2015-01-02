@@ -1971,14 +1971,22 @@ void GC_Weap_ScriptGun::Attach(GC_Actor *actor)
 	
 	_time = _reload;
 	
-	if ( _reloadIndicator )
+	if ( _ammo )
 	{
 		_firing = false;
-		GC_IndicatorBar *pIndicator = new GC_IndicatorBar("indicator_ammo", this,
-			(float *) &_ammo_fired, (float *) &_ammo, LOCATION_BOTTOM);
+	}
+	if ( _reloadIndicator )
+	{
+		
 		if ( _reloadIndicator == 1)
 		{
-			pIndicator->SetInverse(true);
+			GC_IndicatorBar *pIndicator = new GC_IndicatorBar("indicator_ammo", this,
+			(float *) &_ammo_fired, (float *) &_ammo, LOCATION_BOTTOM);
+		}
+		else
+		{
+			GC_IndicatorBar *pIndicator = new GC_IndicatorBar("indicator_fuel", this,
+			(float *) &_ammo_fired, (float *) &_ammo, LOCATION_BOTTOM);
 		}
 	}
 	if ( _crosshairType == 2 )
